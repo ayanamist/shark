@@ -1,6 +1,7 @@
 node_modules
 log
 etc
+run
 default-*.properties
 test/unit/etc
 test/unit/log
