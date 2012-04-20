@@ -4,3 +4,6 @@ etc
 default-*.properties
 test/unit/etc
 test/unit/log
+test/unit/tmp
+build/jscoverage
+build/coverage.html
