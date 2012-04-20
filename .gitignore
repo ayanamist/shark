@@ -5,6 +5,6 @@ default-*.properties
 test/unit/etc
 test/unit/log
 test/unit/tmp
-bin/*
+bin/appctl
 build/jscoverage
 build/coverage.html
