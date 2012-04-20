@@ -40,8 +40,18 @@ describe('build library', function() {
   /* {{{ should_build_setmode_works_fine() */
   it('should_build_setmode_works_fine', function() {
     Build.setmode(__filename, 0644);
+
+    var _me = fs.statSync(__filename);
+    should.ok(_me.mode & 0400);
+    should.ok(_me.mode & 0200);
+    should.ok(!(_me.mode & 0100));
+
     Build.setmode(__filename, 0777);
-    //fs.statSync(__filename).should.have.property('mode', 0777);
+    var _me = fs.statSync(__filename);
+    should.ok(_me.mode & 040);
+    should.ok(_me.mode & 020);
+    should.ok(_me.mode & 010);
+
     Build.setmode(__filename, 0644);
   });
   /* }}} */
