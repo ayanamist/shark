@@ -8,6 +8,7 @@
 // Author: pengchun <pengchun@taobao.com>
 
 var should  = require('should');
+var fs      = require('fs');
 var Build   = require(__dirname + '/../../lib/build.js');
 
 describe('build library', function() {
@@ -20,6 +21,10 @@ describe('build library', function() {
       _files.push(fname);
     });
     _files.should.include(__filename);
+
+    Build.fileset(__filename, function(fname) {
+        fname.should.eql(__filename);
+    });
 
     try {
       var _files  = [];
@@ -34,7 +39,10 @@ describe('build library', function() {
 
   /* {{{ should_build_setmode_works_fine() */
   it('should_build_setmode_works_fine', function() {
-    //Build.setmode(__filename, 0111);
+    Build.setmode(__filename, 0644);
+    Build.setmode(__filename, 0777);
+    //fs.statSync(__filename).should.have.property('mode', 0777);
+    Build.setmode(__filename, 0644);
   });
   /* }}} */
 
