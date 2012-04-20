@@ -1,5 +1,5 @@
 node_modules
-test/unit/conf
+test/unit/etc
 test/unit/tmp
 log
 etc/*
