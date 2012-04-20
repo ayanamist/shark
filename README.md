@@ -1,5 +1,5 @@
 
-[![Build Status](https://secure.travis-ci.org/aleafs/itier-client.png)](http://travis-ci.org/aleafs/itier-client)
+[![Build Status](https://secure.travis-ci.org/aleafs/node-shark.png)](http://travis-ci.org/aleafs/node-shark)
 
 # About #
 

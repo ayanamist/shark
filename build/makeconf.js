@@ -24,6 +24,7 @@ var _me = Builder.init(_props);
 
 _me.task('makeconf for unittest', function() {
   _me.makedir('test/unit/etc');
+  _me.makedir('test/unit/tmp');
   _me.makeconf('build/tpl/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
   _me.makeconf('build/tpl/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
   _me.makeconf('build/tpl/test/test_config_file.json',  'test/unit/etc/test_config_file.json');

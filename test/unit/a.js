@@ -36,7 +36,4 @@ function fileset(dir, callback) {
 fileset(__dirname + '/../../lib', function(fname) {
   require(fname);
 });
-fileset(__dirname + '/../../app', function(fname) {
-  //
-});
 

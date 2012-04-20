@@ -14,7 +14,7 @@ describe('file config', function() {
 
   /* {{{ should_js_config_works_fine() */
   it('should_js_config_works_fine', function() {
-    var cfg	= config.create(__dirname + '/ini/test_config_file.js');
+    var cfg	= config.create(__dirname + '/etc/test_config_file.js');
 
     cfg.get('i_am_not_defined', {'a':'b'}).should.eql({'a':'b'});
     cfg.get('key1', 0).should.eql(1);
@@ -29,7 +29,7 @@ describe('file config', function() {
 
   /* {{{ should_json_config_works_fine() */
   it('should_json_config_works_fine', function() {
-    var cfg = config.create(__dirname + '/ini/test_config_file.json');
+    var cfg = config.create(__dirname + '/etc/test_config_file.json');
     cfg.get('a').should.eql(0);
     should.ok(!cfg.get('i am not defined'));
 
@@ -53,7 +53,7 @@ describe('file config', function() {
 
   /* {{{ should_ini_config_works_fine() */
   it('should_ini_config_works_fine', function() {
-    var cfg	= config.create(__dirname + '/ini/test_config_file.ini');
+    var cfg	= config.create(__dirname + '/etc/test_config_file.ini');
     cfg.all().should.eql({
       'key1'    : '',
       'key2'    : 0.01,
@@ -67,25 +67,6 @@ describe('file config', function() {
         'key1'  : 'aa',
         'key3'  : 'bb',
       },
-    });
-  });
-  /* }}} */
-
-  /* {{{ should_config_file_hot_load_works_fine() */
-  it('should_config_file_hot_load_works_fine', function(done) {
-    var fs  = require('fs');
-    var me  = __dirname + '/ini/test_hot_config.ini';
-    fs.writeFile(me, 'c1 = "a"', function(error) {
-      should.ok(!error);
-
-      var cfg   = config.create(me);
-      cfg.get('c1').should.eql('a');
-
-      fs.writeFile(me, 'c1 = "b"', function(error) {
-        should.ok(!error);
-        cfg.all().should.eql({'c1' : 'b'});
-        done();
-      });
     });
   });
   /* }}} */
