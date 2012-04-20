@@ -1,1 +1,4 @@
 node_modules
+test/unit/conf
+test/unit/tmp
+logs

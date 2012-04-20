@@ -8,7 +8,6 @@
   "description": "A new develop framework for Node.js",
   "keywords": [ "shark", "Node.js", "framework" ],
   "dependencies": {
-    "node-cluster"  : ">=0.1.10",
   },
   "engines": {
     "node": ">=0.6.9"
