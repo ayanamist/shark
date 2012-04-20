@@ -1,3 +1,4 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 
-console.log('aa');
+var Builder = require(__dirname + '/../lib/build.js');
+

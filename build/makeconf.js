@@ -28,6 +28,8 @@ _me.task('makeconf for unittest', function() {
   _me.makeconf('build/tpl/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
   _me.makeconf('build/tpl/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
   _me.makeconf('build/tpl/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
+
+  _me.makedir('bin');
   _me.makeconf('build/tpl/appctl.sh', 'bin/appctl', {
     'app.pid.file'  : _me.valueOf('dir.root') + '/run/appname.pid',
   });
