@@ -1,0 +1,16 @@
+
+; this a sample for ini file
+
+key1    = ""
+key2    = 0.01
+key3    = 010
+key4    = -213
+
+[sec1]
+key1    = "a=b\"c"
+key2    = "1"
+
+[sec1:default]
+key1    = 'aa'
+key3    = bb
+这不是一个有效行
