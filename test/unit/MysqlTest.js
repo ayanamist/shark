@@ -88,9 +88,8 @@ describe('mysql pool with libmysqlclient', function() {
             done();
           });
         });
-          }, true);
+          });
         });
-
   });
   /**/
 
