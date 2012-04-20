@@ -1,7 +1,0 @@
-{
-  'host'        : '##mysql.default.host##',
-  'port'        : ##mysql.default.port##,
-  'user'        : '##mysql.default.user##',
-  'password'    : '##mysql.default.password##',
-  'poolsize'    : 6
-}
