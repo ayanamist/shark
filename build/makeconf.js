@@ -11,7 +11,6 @@ if (!path.existsSync(_props) || 1) {
     'dir.root'    : path.normalize(__dirname + '/../'),
     'log.root'    : path.normalize(__dirname + '/../log/'),
 
-    /**<    itier元数据库配置   */
     'mysql.default.host'      : '127.0.0.1',
     'mysql.default.port'      : 3306,
     'mysql.default.user'      : 'root',
