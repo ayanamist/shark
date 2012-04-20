@@ -11,7 +11,7 @@ if (!path.existsSync(_props) || 1) {
     'dir.root'    : path.normalize(__dirname + '/../'),
     'log.root'    : path.normalize(__dirname + '/../log/'),
 
-    'mysql.default.host'      : '127.0.0.1',
+    'mysql.default.host'      : '127.0.0.1,localhost',
     'mysql.default.port'      : 3306,
     'mysql.default.user'      : 'root',
     'mysql.default.password'  : '',
@@ -27,6 +27,13 @@ _me.task('makeconf for unittest', function() {
   _me.makeconf('build/tpl/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
   _me.makeconf('build/tpl/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
   _me.makeconf('build/tpl/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
+
+  _me.makeconf('build/tpl/test/mysql.ini',  'test/unit/etc/mysql_test.ini', {
+    'mysql.default.host'    : _me.valueOf('mysql.default.host'),
+    'mysql.default.port'    : _me.valueOf('mysql.default.port'),
+    'mysql.default.user'    : _me.valueOf('mysql.default.user'),
+    'mysql.default.pass'    : _me.valueOf('mysql.default.password'),
+  });
 
   _me.makedir('bin');
   _me.makeconf('build/tpl/appctl.sh', 'bin/appctl', {
