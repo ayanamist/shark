@@ -1,6 +1,6 @@
 node_modules
-test/unit/etc
-test/unit/tmp
 log
-etc/*
+etc
 default-*.properties
+test/unit/etc
+test/unit/log
