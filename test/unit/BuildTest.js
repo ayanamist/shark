@@ -58,7 +58,21 @@ describe('build library', function() {
 
   /* {{{ should_build_init_works_fine() */
   it('should_build_init_works_fine', function() {
-    var _me = Build.init();
+    var _me = Build.init(undefined, __dirname);
+
+    var the = (new Date()).getTime();
+
+    _me.makedir(__dirname + '/etc/build').makedir('etc/build');
+    _me.makeconf(__dirname + '/../../build/tpl/test/test.properties', 'etc/build/test1.properties', {
+      'test.c3.value'   : the,
+    });
+
+    var _me = Build.init('etc/build/test1.properties', __dirname);
+    _me.property().should.eql({
+      'test.c1' : '123dsf=4 5有效',
+      'test.c2' : '"replace last data"',
+      'test.c3' : the + '',
+    });
   });
   /* }}} */
 
