@@ -1,5 +1,5 @@
 
-JSCOVERAGE="./node_modules/visionmedia-jscoverage/jscoverage"
+JSCOVERAGE="./build/jscoverage"
 
 init:
 	npm install
@@ -13,7 +13,7 @@ func: init
 	ps ux | grep node | grep -v grep | awk '{print $$2}' | xargs kill -9 
 
 cov: clean init
-	@npm install visionmedia-jscoverage
+	@/bin/bash ./build/jscoverage.sh
 	-mv lib lib.bak && $(JSCOVERAGE) lib.bak lib 
 	-./node_modules/mocha/bin/mocha --reporter html-cov --timeout 5000 test/unit/*.js > ./build/coverage.html
 	-rm -rf lib && mv lib.bak lib
@@ -21,7 +21,7 @@ cov: clean init
 clean:
 	-rm -rf build/coverage.html
 	-rm -rf log/*
-	-@find etc -type f | grep -v svn | xargs rm -f
-	-@find test/unit/etc/ | xargs rm -f
+	-@find etc -type f | grep -v svn | xargs rm -rf
+	-@find test/unit/etc/ | xargs rm -rf
 
 .PHONY: test
