@@ -10,6 +10,8 @@
 // test coverage init, require all javascript files
 
 require(__dirname + '/../../lib/build.js').fileset(__dirname + '/../../lib', function(fname) {
-  require(fname);
+  if (fname.match(/\.js$/)) {
+    require(fname);
+  }
 });
 

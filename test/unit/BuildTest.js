@@ -65,6 +65,7 @@ describe('build library', function() {
     _me.makedir(__dirname + '/etc/build').makedir('etc/build');
     _me.makeconf(__dirname + '/../../build/tpl/test/test.properties', 'etc/build/test1.properties', {
       'test.c3.value'   : the,
+      'test.c5' : the,
     });
 
     var _me = Build.init('etc/build/test1.properties', __dirname);
@@ -72,6 +73,21 @@ describe('build library', function() {
       'test.c1' : '123dsf=4 5有效',
       'test.c2' : '"replace last data"',
       'test.c3' : the + '',
+      'test.c4' : '##i.will.not.be.found##',
+      'test.c5' : the + '',
+    });
+    _me.makeconf(__dirname + '/../../build/tpl/test/test.properties', 'etc/build/test2.properties', {
+      'test.c3.value'       : _me.$('test.c1'),
+      'i.will.not.be.found' : 'i.am.found',
+    });
+
+    var _me = Build.init('etc/build/test2.properties', __dirname);
+    _me.property().should.eql({
+      'test.c1' : '123dsf=4 5有效',
+      'test.c2' : '"replace last data"',
+      'test.c3' : '123dsf=4 5有效',
+      'test.c4' : 'i.am.found',
+      'test.c5' : the + '',
     });
   });
   /* }}} */

@@ -19,32 +19,26 @@ if (!path.existsSync(_props)) {
   });
 }
 
-var _me = Builder.init(_props);
+var _me = Builder.init(_props, __dirname + '/../');
 
-_me.task('makeconf for unittest', function() {
-  _me.makedir('test/unit/etc');
-  _me.makedir('test/unit/tmp');
+_me.makedir('test/unit/etc');
+_me.makedir('test/unit/tmp');
 
-  _me.makeconf('build/tpl/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
-  _me.makeconf('build/tpl/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
-  _me.makeconf('build/tpl/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
+_me.makeconf('build/tpl/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
+_me.makeconf('build/tpl/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
+_me.makeconf('build/tpl/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
 
-  _me.makeconf('build/tpl/test/mysql.ini',  'test/unit/etc/mysql_test.ini', {
-    'mysql.default.host'    : _me.valueOf('mysql.default.host'),
-    'mysql.default.port'    : _me.valueOf('mysql.default.port'),
-    'mysql.default.user'    : _me.valueOf('mysql.default.user'),
-    'mysql.default.pass'    : _me.valueOf('mysql.default.password'),
-  });
+_me.makeconf('build/tpl/test/mysql.ini',  'test/unit/etc/mysql_test.ini', {
+  'mysql.default.host'    : _me.$('mysql.default.host'),
+  'mysql.default.port'    : _me.$('mysql.default.port'),
+  'mysql.default.user'    : _me.$('mysql.default.user'),
+  'mysql.default.pass'    : _me.$('mysql.default.password'),
 });
 
-_me.task('build runtime', function() {
-  _me.makedir('bin');
-  _me.makedir('run');
-  _me.makeconf('build/tpl/appctl.sh', 'bin/appctl', {
-    'app.pid.file'  : _me.valueOf('dir.root') + '/run/appname.pid',
-  });
-  Builder.setmode('bin/appctl', 0755);
+_me.makedir('bin');
+_me.makedir('run');
+_me.makeconf('build/tpl/appctl.sh', 'bin/appctl', {
+  'app.pid.file'  : _me.$('dir.root') + '/run/appname.pid',
 });
-
-_me.execute();
+Builder.setmode('bin/appctl', 0755);
 
