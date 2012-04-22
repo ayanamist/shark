@@ -81,6 +81,7 @@ describe('mysql pool with libmysqlclient', function() {
           info.should.have.property('insertId', 1);
           info.should.have.property('affectedRows', 1);
           _me.query('SELECT * FROM test.only_for_unittest', function(error, rows) {
+            console.log(error);
             rows.should.eql([{
               'id'  : 1,
               'txt' : 'te',
