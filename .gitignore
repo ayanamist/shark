@@ -9,3 +9,5 @@ test/unit/tmp
 bin/appctl
 build/jscoverage
 build/coverage.html
+build/src
+build/output
