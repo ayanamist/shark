@@ -40,11 +40,10 @@ var Handle  = function() {
 
 describe('cache protocol', function() {
 
-  /* {{{ should_cache_set_and_get_works_fine() */
-  it('should_cache_set_and_get_works_fine', function(done) {
+  /* {{{ should_cache_set_and_get_and_unset_works_fine() */
+  it('should_cache_set_and_get_and_unset_works_fine', function(done) {
     var num = 2;
-    var res = Handle();
-    var _me = Cache.create('test1', res);
+    var _me = Cache.create('test1', Handle());
 
     _me.set('key1', {'a' : 'val1', 'b' : [2]}, function(error) {
       should.ok(!error);
@@ -52,10 +51,18 @@ describe('cache protocol', function() {
         should.ok(!error);
         value.should.eql({'a' : 'val1', 'b' : [2]});
         expire.should.eql(2);
-        if ((--num) <= 0) {
-          done();
-        }
+        _me.unset('key1', function(error) {
+          should.ok(!error);
+          _me.get('key1', function(error, value, expire) {
+            should.ok(!error);
+            should.ok(!value);
+            if ((--num) <= 0) {
+              done();
+            }
+          });
+        });
       });
+
     }, 2);
 
     _me.get('i am not exists', function(error, value, expire) {
@@ -64,6 +71,20 @@ describe('cache protocol', function() {
       if ((--num) <= 0) {
         done();
       }
+    });
+  });
+  /* }}} */
+
+  /* {{{ should_unexpected_cache_works_fine() */
+  it('should_unexpected_cache_works_fine', function(done) {
+    var res = Handle();
+    var _me = Cache.create('test2', res);
+
+    res.set('test2#key1', 0 + JSON.stringify({'a' : 'fwekksgeg'}), function(error) {
+      _me.get('key1', function(error, value, expire) {
+        error.toString().should.eql('Error: UnExpectCacheValue');
+        done();
+      });
     });
   });
   /* }}} */
