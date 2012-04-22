@@ -89,4 +89,51 @@ describe('cache protocol', function() {
   });
   /* }}} */
 
+  /* {{{ should_cache_expire_works_fine() */
+  it('should_cache_expire_works_fine', function(done) {
+    var num = 1;
+    var _me = Cache.create('test3', Handle());
+    _me.set('key1', 'val1', function(error) {
+
+      _me.get('key1', function(error, value, expire) {
+        value.should.eql('val1');
+      });
+
+      setTimeout(function() {
+        _me.get('key1', function(error, value, expire) {
+          should.ok(!error);
+          should.ok(null === value);
+          if ((--num) <= 0) {
+            done();
+          }
+        });
+      }, 2);
+    }, 1);
+
+    ++num;
+    _me.set('key2', 'val2', function(error) {
+
+      should.ok(!error);
+      _me.tagrm('table3');
+
+      _me.get('key2', function(error, value, expire) {
+        should.ok(!error);
+        value.should.eql('val2');
+        expire.should.eql(86400000);
+
+        setTimeout(function() {
+          _me.tagrm('table2');
+          _me.get('key2', function(error, value, expire) {
+            should.ok(!error);
+            should.ok(null === value);
+            if ((--num) <= 0) {
+              done();
+            }
+          });
+        }, 1);
+      });
+    }, null, ['table1', 'table2']);
+  });
+  /* }}} */
+
 });
