@@ -6,7 +6,7 @@ export LANG=en_US.UTF-8
 declare -r __PATH="$(pwd)"
 declare -r __ROOT="$(dirname -- $(cd -- $(dirname -- ${0}) && pwd))"
 declare -r __GITURL="$(grep url ${__ROOT}/.git/config | grep @github.com: | head -n1 | cut -d= -f2)"
-declare -r __NAME=$(basename -- ${__GITURL} | cut -d. -f1)
+declare -r __NAME="$(basename -- ${__GITURL} | cut -d. -f1)"
 
 if [ -d "${__ROOT}/build/src" ] ; then
     /bin/rm -rf "${__ROOT}/build/src"
