@@ -92,7 +92,7 @@ describe('cache protocol', function() {
   /* {{{ should_cache_expire_works_fine() */
   it('should_cache_expire_works_fine', function(done) {
     var num = 1;
-    var _me = Cache.create('test3', Handle());
+    var _me = Cache.create('test2', Handle());
     _me.set('key1', 'val1', function(error) {
 
       _me.get('key1', function(error, value, expire) {
@@ -135,5 +135,8 @@ describe('cache protocol', function() {
     }, null, ['table1', 'table2']);
   });
   /* }}} */
+
+  it('should_data_compress_works_fine', function() {
+  });
 
 });

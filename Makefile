@@ -21,7 +21,6 @@ cov: clean init
 clean:
 	-rm -rf build/coverage.html
 	-rm -rf log/*
-	-@find etc -type f | grep -v svn | xargs rm -rf
 	-@find test/unit/etc/ | xargs rm -rf
 
 .PHONY: test
