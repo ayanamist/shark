@@ -21,7 +21,7 @@ mkdir -p "${__ROOT}/build/src" && mkdir -p "${__ROOT}/build/output" && \
     cd "${__ROOT}/build/src" && \
     find . -name ".*" | grep -E "[^\.\w\+]" | xargs rm -rf && \
     /bin/rm -rf ./test ./build/tpl/test && \
-    find ./build -d 1 -name "*.sh" | grep -v "makeconf.js" | xargs rm -rf && \
+    find ./build -depth 1 -name "*.sh" | grep -v "makeconf.js" | xargs rm -rf && \
     tar -cvzf ../output/${__NAME}.tar.gz ./* && /bin/rm -rf "${__ROOT}/build/src"
 
 cd ${__PATH}
