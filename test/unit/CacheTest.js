@@ -136,6 +136,30 @@ describe('cache protocol', function() {
   });
   /* }}} */
 
+  /* {{{ should_cache_sigleton_works_fine() */
+  it('should_cache_sigleton_works_fine', function(done) {
+    var me1 = Cache.create('sigleton');
+    var me2 = Cache.create('sigletoN ', Handle());
+
+    var num = 2;
+    me1.set('blablablaaaa', '周华健', function(error) {
+      me1.get('blablablaaaa', function(error, value, expire) {
+        value.should.eql('周华健');
+        if ((--num) <= 0) {
+          done();
+        }
+      });
+    
+      me2.get('blablablaaaa', function(error, value, expire) {
+        value.should.eql('周华健');
+        if ((--num) <= 0) {
+          done();
+        }
+      });
+    });
+  });
+  /* }}} */
+
   it('should_data_compress_works_fine', function() {
   });
 
