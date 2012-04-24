@@ -21,6 +21,7 @@ var Handle  = function() {
   var _me   = {};
 
   _me.set   = function(key, value, callback) {
+    console.log(key);
     _obj[key]   = value;
     callback(null);
   };
@@ -80,7 +81,7 @@ describe('cache protocol', function() {
     var res = Handle();
     var _me = Cache.create('test2', res);
 
-    res.set('test2#key1', 0 + JSON.stringify({'a' : 'fwekksgeg'}), function(error) {
+    res.set(Cache.getkey('test2#key1'), 0 + JSON.stringify({'a' : 'fwekksgeg'}), function(error) {
       _me.get('key1', function(error, value, expire) {
         error.toString().should.eql('Error: UnExpectCacheValue');
         done();
