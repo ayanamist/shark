@@ -5,8 +5,12 @@ export LANG=en_US.UTF-8
 
 . /etc/init.d/functions
 
-declare -r APPNAME=$(basename -- "${0}")
+declare -r __PWD__=$(pwd)
+declare -r APPROOT=$(cd -- $(dirname -- ${0}) && cd .. && pwd)
+declare -r APPNAME=$(basename "${0}")
+
 declare -r PIDFILE="##app.pid.file##"
+declare -r NODEBIN="##nodejs.bin##"
 
 # {{{ function usage() #
 usage() {
@@ -25,13 +29,35 @@ getpid() {
 }
 # }}} #
 
+# {{{ function still() #
+still() {
+    local pid="${1}"
+    if [ -d "/proc/${pid}" ] ; then
+        return 1
+    fi
+
+    if [ $(ps --ppid ${pid} | grep -v -w -c "PID") -gt 0 ] ; then
+        return 1
+    fi
+
+    return 0
+}
+# }}} #
+
 # {{{ function start() #
 start() {
     local pid=$(getpid)
     if [ ${pid} -gt 0 ] ; then
         echo "${APPNAME} is running (PID=${pid})"
     else
-        :
+        nohup ${NODEBIN} ${APPROOT}/main.js &
+        # XXX: bug here
+        if [ ${?} -eq 0 ] ; then
+            echo_success
+        else
+            echo_failure
+        fi
+        echo
     fi
 }
 # }}} #
@@ -39,19 +65,32 @@ start() {
 # {{{ function stop() #
 stop() {
     local pid=$(getpid)
-    if [ ${pid} -gt 0 ] ; then
-        echo "Stopping ${APPNAME} (PID=${pid}) ... "
-        kill -s SIGTERM ${pid}
-        for t in 1 1 2 2 ; do
-            sleep ${t}
-            if [ ! -d "/proc/${pid}" ] && [ $(ps --ppid ${id} | wc -l) -eq 0 ] ; then
-                break
-            fi
-        done
-        echo
-    else
+    if [ ${pid} -eq 0 ] ; then
         echo "${APPNAME} is not running"
+        return
     fi
+
+    echo "Stopping ${APPNAME} (PID=${pid}) ... "
+    kill -s SIGTERM ${pid}
+    for t in 1 1 1 1 1 ; do
+        sleep ${t}
+        still ${pid}
+        if [ ${?} -eq 0 ] ; then
+            break
+        fi
+    done
+
+    still ${pid}
+    if [ ${?} -gt 0 ] ; then
+        echo -n ", force kill ... "
+        kill -9 ${pid} &> /dev/null
+        for i in $(ps --ppid ${pid} | grep -v -w "PID" | awk '{print $1}') ; do
+            kill -9 ${i} &> /dev/null
+        done
+    fi
+
+    echo_success
+    echo
 }
 # }}} #
 
@@ -84,6 +123,7 @@ status() {
 }
 # }}} #
 
+cd ${__PWD__}
 case "${1}" in
     start)
         start;;  
