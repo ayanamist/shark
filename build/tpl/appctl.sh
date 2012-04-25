@@ -5,37 +5,75 @@ export LANG=en_US.UTF-8
 
 . /etc/init.d/functions
 
-declare -i PID=0
-if [ -f "##app.pid.file##" ] ; then
-    PID=`cat "##app.pid.file##"`
-fi
+declare -r APPNAME=$(basename -- "${0}")
+declare -r PIDFILE="##app.pid.file##"
 
 # {{{ function usage() #
-function usage() {
-    echo "${0} {start|stop|restart|status}"
+usage() {
+    echo "${0} {start|stop|reload|restart|status}"
     exit 1;
 }
 # }}} #
 
+# {{{ function getpid() #
+getpid() {
+    local pid=$(cat -- "${PIDFILE}" 2> /dev/null)
+    if [ -z "${pid}" ] || [ ! -d "/proc/${pid}" ] ; then
+        pid=0
+    fi
+    echo ${pid}
+}
+# }}} #
+
 # {{{ function start() #
-function start() {
-:
+start() {
+    local pid=$(getpid)
+    if [ ${pid} -gt 0 ] ; then
+        echo "${APPNAME} is running (PID=${pid})"
+    else
+        :
+    fi
 }
 # }}} #
 
 # {{{ function stop() #
-function stop() {
-if [ ${PID} -gt 0 ] ; then
-    kill -s SIGTERM ${PID}
-fi
+stop() {
+    local pid=$(getpid)
+    if [ ${pid} -gt 0 ] ; then
+        echo "Stopping ${APPNAME} (PID=${pid}) ... "
+        kill -s SIGTERM ${pid}
+    else
+        echo "${APPNAME} is not running"
+    fi
 }
 # }}} #
 
-# {{{ function restart() #
-function restart() {
-if [ ${PID} -gt 0 ] ; then
-    kill -s SIGUSR1 ${PID}
-fi
+# {{{ function reload() #
+reload() {
+    local pid=$(getpid)
+    if [ ${pid} -gt 0 ] ; then
+        echo "Reload ${APPNAME} (PID=${pid}) ... "
+        kill -s SIGUSR1 ${pid}
+        if [ ${?} -eq 0 ] ; then
+            echo_success
+        else
+            echo_failure
+        fi
+        echo
+    else
+        echo "${APPNAME} is not running"
+    fi
+}
+# }}} #
+
+# {{{ function status() #
+status() {
+    local pid=$(getpid)
+    if [ "${pid}" -gt 0 ] ; then
+        echo "${APPNAME} is running (PID=${pid})"
+    else
+        echo "${APPNAME} is not running"
+    fi
 }
 # }}} #
 
@@ -45,7 +83,12 @@ case "${1}" in
     stop)
         stop;;
     restart)
-        restart;;
+        stop
+        start;;
+    reload)
+        reload;;
+    status)
+        status;;
     *)
         usage;;
 esac
