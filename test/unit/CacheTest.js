@@ -80,7 +80,7 @@ describe('cache protocol', function() {
     var res = Handle();
     var _me = Cache.create('test2', res);
 
-    res.set(Cache.getkey('test2#key1'), 0 + JSON.stringify({'a' : 'fwekksgeg'}), function(error) {
+    res.set(Cache.getkey('test2#key1'), JSON.stringify({'a' : 'fwekksgeg'}), function(error) {
       _me.get('key1', function(error, value, expire) {
         error.toString().should.eql('Error: UnExpectCacheValue');
         done();
@@ -160,7 +160,24 @@ describe('cache protocol', function() {
   });
   /* }}} */
 
-  it('should_data_compress_works_fine', function() {
+  /* {{{ should_gzip_works_fine() */
+  it('should_gzip_works_fine', function(done) {
+    var Zlib    = require('zlib');
+    Zlib.gzip(JSON.stringify({
+      '_me' : 'abcdefghijklmnopqrstuvwxyz0123456',
+      '_hi' : 0x2312312,
+    }), function(error, value) {
+      should.ok(!error);
+      Zlib.gunzip(value, function(error, data) {
+        should.ok(!error);
+
+        var _me = JSON.parse(data);
+        _me.should.have.property('_me', 'abcdefghijklmnopqrstuvwxyz0123456');
+        _me.should.have.property('_hi', 0x2312312);
+        done();
+      });
+    });
   });
+  /* }}} */
 
 });
