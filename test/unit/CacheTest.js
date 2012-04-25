@@ -38,7 +38,46 @@ var Handle  = function() {
 };
 /* }}} */
 
-describe('cache protocol', function() {
+/* {{{ private function Keeper() */
+/**
+ * @模拟的tag info存储引擎
+ */
+var Keeper  = function() {
+
+  var _info = {
+    'hello' : 1,
+  };
+
+  var _me   = {};
+  _me.write = function(name, value, callback) {
+    name    = name.trim().toLowerCase();
+    switch (name) {
+      case 'right':
+        _info[name] = Math.max(value, _info[name] ? _info[name] : 0);
+        break;
+
+      case 'delay':
+        // XXX: 模拟异步write方法
+        setTimeout(function() {
+          _info[name] = Math.max(value, _info[name] ? _info[name] : 0);
+        }, 5);
+        break;
+
+      default:
+        _info[name] = value;
+        break;
+    }
+    callback && callback(null);
+  };
+  _me.load  = function(callback) {
+    callback(_info.error ? (new Error('TestError')) : null, _info);
+  };
+
+  return _me;
+};
+/* }}} */
+
+describe('cache management', function() {
 
   /* {{{ should_cache_set_and_get_and_unset_works_fine() */
   it('should_cache_set_and_get_and_unset_works_fine', function(done) {
@@ -162,8 +201,8 @@ describe('cache protocol', function() {
   });
   /* }}} */
 
-  /* {{{ should_gzip_works_fine() */
-  it('should_gzip_works_fine', function(done) {
+  /* {{{ should_gzip_with_buffer_works_fine() */
+  it('should_gzip_with_buffer_works_fine', function(done) {
     var Zlib    = require('zlib');
     Zlib.gzip(JSON.stringify({
       '_me' : 'abcdefghijklmnopqrstuvwxyz0123456',
@@ -179,6 +218,56 @@ describe('cache protocol', function() {
         done();
       });
     });
+  });
+  /* }}} */
+
+  /* {{{ should_tag_info_sync_works_fine() */
+  it('should_tag_info_sync_works_fine', function(done) {
+
+    // XXX: 同一个keeper，两个cache对象（模拟两台机器，或者两个进程）的taginfo会共享
+    var kep = Keeper();
+
+    var me1 = Cache.create('test6_1', Handle(), kep, {
+      'tag_flush_interval'  : 1,
+    });
+    var me2 = Cache.create('test6_2', Handle(), kep, {
+      'tag_flush_interval'  : 1,
+    });
+
+    me1.set('key1', 'val1', function(error) {
+      me1.get('key1', function(error, value) {
+        value.should.eql('val1');
+        me2.set('key1', 'val2', function(error) {
+          me2.get('key1', function(error, value) {
+            value.should.eql('val2');
+
+            setTimeout(function() {
+              me2.tagrm('delay');
+              me2.get('key1', function(error, value) {
+
+                // me2 立即生效, 并且在1ms后向keeper同步tag info
+                should.ok(!error);
+                should.ok(null === value);
+
+                // me1 要等到同步完成后才能见到效果
+                me1.get('key1', function(error, value) {
+                  value.should.eql('val1');
+                  setTimeout(function() {
+                    me1.get('key1', function(error, value) {
+                      should.ok(!error);
+                      should.ok(null === value);
+                      done();
+                    });
+                  }, 80);
+                });
+              });
+            }, 1);
+          });
+        }, null, ['right', 'delay']);
+      });
+    }, null, ['right', 'delay']);
+
+
   });
   /* }}} */
 
