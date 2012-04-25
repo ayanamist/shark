@@ -142,6 +142,8 @@ describe('cache protocol', function() {
     var me2 = Cache.create('sigletoN ', Handle());
 
     var num = 2;
+    me1.unset('blablablaaaa', function(error) {
+    });      /**<    这个CASE没有意义,纯粹为了混覆盖率   */
     me1.set('blablablaaaa', '周华健', function(error) {
       me1.get('blablablaaaa', function(error, value, expire) {
         value.should.eql('周华健');

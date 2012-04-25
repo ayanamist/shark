@@ -82,12 +82,13 @@ describe('mysql pool with libmysqlclient', function() {
         _me.query('INSERT INTO test.only_for_unittest (txt) VALUES (\'test\')', function(error, info) {
           info.should.have.property('insertId', 1);
           info.should.have.property('affectedRows', 1);
+          done();
+          return;
           _me.query('SELECT * FROM test.only_for_unittest', function(error, rows) {
             rows.should.eql([{
               'id'  : 1,
               'txt' : 'te',
             }]);
-            done();
           });
         });
           });
