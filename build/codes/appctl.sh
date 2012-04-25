@@ -42,6 +42,13 @@ stop() {
     if [ ${pid} -gt 0 ] ; then
         echo "Stopping ${APPNAME} (PID=${pid}) ... "
         kill -s SIGTERM ${pid}
+        for t in 1 1 2 2 ; do
+            sleep ${t}
+            if [ ! -d "/proc/${pid}" ] && [ $(ps --ppid ${id} | wc -l) -eq 0 ] ; then
+                break
+            fi
+        done
+        echo
     else
         echo "${APPNAME} is not running"
     fi
