@@ -37,9 +37,15 @@ _me.makeconf('build/tpl/test/mysql.ini',  'test/unit/etc/mysql_test.ini', {
 
 _me.makedir('bin');
 _me.makedir('run');
-_me.makeconf('build/codes/appctl.sh', 'bin/appctl', {
+_me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
   'app.pid.file'    : path.normalize(_me.$('dir.root') + '/run/appname.pid'),
   'nodejs.bin'      : '/usr/local/bin/node',
 });
 Builder.setmode('bin/appctl', 0755);
+
+_me.makeconf('build/codes/shark.js',    'bin/_shark', {
+  'app.pid.file'    : path.normalize(_me.$('dir.root') + '/run/appname.pid'),
+  'nodejs.bin'      : '/usr/local/bin/node',
+});
+Builder.setmode('bin/_shark', 0755);
 

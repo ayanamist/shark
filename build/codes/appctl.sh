@@ -50,7 +50,7 @@ start() {
     if [ ${pid} -gt 0 ] ; then
         echo "${APPNAME} is running (PID=${pid})"
     else
-        nohup ${NODEBIN} ${APPROOT}/main.js &
+        nohup ${NODEBIN} ${APPROOT}/bin/_shark &
         # XXX: bug here
         if [ ${?} -eq 0 ] ; then
             echo_success
