@@ -43,9 +43,9 @@ _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
 });
 Builder.setmode('bin/appctl', 0755);
 
-_me.makeconf('build/codes/shark.js',    'bin/_shark', {
+_me.makeconf('build/codes/shark.js',    'bin/shark', {
   'app.pid.file'    : path.normalize(_me.$('dir.root') + '/run/appname.pid'),
   'nodejs.bin'      : '/usr/local/bin/node',
 });
-Builder.setmode('bin/_shark', 0755);
+Builder.setmode('bin/shark', 0755);
 

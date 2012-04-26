@@ -53,8 +53,8 @@ start() {
     fi
 
     echo "Start ${APPNAME} ... "
-    nohup ${NODEBIN} ${APPROOT}/bin/_shark &
-    for _time in 1 1 1 1 2 ; do
+    nohup ${NODEBIN} ${APPROOT}/bin/shark &
+    for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then
             echo_success
@@ -78,7 +78,7 @@ stop() {
 
     echo "Stopping ${APPNAME} (PID=${pid}) ... "
     kill -s SIGTERM ${pid}
-    for t in 1 1 1 1 1 ; do
+    for t in 1 1 2 3 3 ; do
         sleep ${t}
         still ${pid}
         if [ ${?} -eq 0 ] ; then
@@ -103,18 +103,19 @@ stop() {
 # {{{ function reload() #
 reload() {
     local pid=$(getpid)
-    if [ ${pid} -gt 0 ] ; then
-        echo "Reload ${APPNAME} (PID=${pid}) ... "
-        kill -s SIGUSR1 ${pid}
-        if [ ${?} -eq 0 ] ; then
-            echo_success
-        else
-            echo_failure
-        fi
-        echo
-    else
+    if [ ${pid} -eq 0 ] ; then
         echo "${APPNAME} is not running"
+        return
     fi
+
+    echo "Reload ${APPNAME} (PID=${pid}) ... "
+    kill -s SIGUSR1 ${pid}
+    if [ ${?} -eq 0 ] ; then
+        echo_success
+    else
+        echo_failure
+    fi
+    echo
 }
 # }}} #
 

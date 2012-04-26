@@ -7,7 +7,7 @@ test/unit/etc
 test/unit/log
 test/unit/tmp
 bin/appctl
-bin/_shark
+bin/shark
 build/jscoverage
 build/coverage.html
 build/src
