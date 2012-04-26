@@ -48,17 +48,23 @@ still() {
 start() {
     local pid=$(getpid)
     if [ ${pid} -gt 0 ] ; then
-        echo "${APPNAME} is running (PID=${pid})"
-    else
-        nohup ${NODEBIN} ${APPROOT}/bin/_shark &
-        # XXX: bug here
-        if [ ${?} -eq 0 ] ; then
-            echo_success
-        else
-            echo_failure
-        fi
-        echo
+        echo "${APPNAME} is already running (PID=${pid})"
+        return
     fi
+
+    echo "Start ${APPNAME} ... "
+    nohup ${NODEBIN} ${APPROOT}/bin/_shark &
+    for _time in 1 1 1 1 2 ; do
+        pid=$(getpid)
+        if [ ${pid} -gt 0 ] ; then
+            echo_success
+            return
+        fi
+
+        sleep ${_time}
+    done
+    echo_failure
+    echo
 }
 # }}} #
 

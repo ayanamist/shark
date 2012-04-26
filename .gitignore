@@ -12,3 +12,4 @@ build/jscoverage
 build/coverage.html
 build/src
 build/output
+nohup.out

@@ -12,4 +12,9 @@
 var master  = require('node-cluster').Master({
   'pidfile' : '##app.pid.file##'
 });
+
+/**
+ * @THIS IS ONLY A DEMO
+ */
+master.register(33751, __dirname + '/../node_modules/node-cluster/demo/worker/http.js');
 master.dispatch();
