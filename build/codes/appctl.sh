@@ -52,18 +52,21 @@ start() {
         return
     fi
 
-    echo "Start ${APPNAME} ... "
-    nohup ${NODEBIN} ${APPROOT}/bin/shark.js &
+    echo -n "start ${APPNAME} ... "
+    nohup ${NODEBIN} ${APPROOT}/bin/shark.js &> /dev/null &
     for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then
+            echo -n ", PID=${pid}"
             echo_success
+            echo
             return
         fi
 
         sleep ${_time}
     done
     echo_failure
+    echo
 }
 # }}} #
 
@@ -75,7 +78,7 @@ stop() {
         return
     fi
 
-    echo "Stopping ${APPNAME} (PID=${pid}) ... "
+    echo -n "stop ${APPNAME} (PID=${pid}) ... "
     kill -s SIGTERM ${pid}
     for t in 1 1 2 3 3 ; do
         sleep ${t}
@@ -99,6 +102,7 @@ stop() {
     fi
 
     echo_success
+    echo
 }
 # }}} #
 
@@ -110,13 +114,14 @@ reload() {
         return
     fi
 
-    echo "Reload ${APPNAME} (PID=${pid}) ... "
+    echo -n "Reload ${APPNAME} (PID=${pid}) ... "
     kill -s SIGUSR1 ${pid}
     if [ ${?} -eq 0 ] ; then
         echo_success
     else
         echo_failure
     fi
+    echo
 }
 # }}} #
 
