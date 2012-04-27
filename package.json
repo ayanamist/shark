@@ -8,7 +8,7 @@
   "description": "A new develop framework for Node.js",
   "keywords": [ "shark", "Node.js", "framework" ],
   "dependencies": {
-    "node-cluster"          : ">=0.1.13",
+    "node-cluster"          : ">=0.1.14",
     "mysql-libmysqlclient"	: ">=1.3.2"
   },
   "engines": {

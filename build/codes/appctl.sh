@@ -64,7 +64,6 @@ start() {
         sleep ${_time}
     done
     echo_failure
-    echo
 }
 # }}} #
 
@@ -95,8 +94,11 @@ stop() {
         done
     fi
 
+    if [ -f "${PIDFILE}" ] ; then
+        /bin/rm -f "${PIDFILE}" &> /dev/null
+    fi
+
     echo_success
-    echo
 }
 # }}} #
 
@@ -115,7 +117,6 @@ reload() {
     else
         echo_failure
     fi
-    echo
 }
 # }}} #
 
