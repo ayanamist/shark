@@ -1,5 +1,5 @@
 
-JSCOVERAGE="./build/jscoverage"
+JSCOVERAGE="./build/bin/jscoverage"
 
 init:
 	npm install

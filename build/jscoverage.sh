@@ -3,7 +3,7 @@
 
 declare -r __PATH=`pwd`
 declare -r __ROOT="$(cd -- $(dirname -- ${0}) && pwd)"
-declare -r JSCOVE="${__ROOT}/jscoverage"
+declare -r JSCOVE="${__ROOT}/bin/jscoverage"
 
 # {{{ function install_jscoverage() #
 install_jscoverage() {

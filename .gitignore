@@ -8,8 +8,7 @@ test/unit/log
 test/unit/tmp
 bin/appctl
 bin/shark.js
-build/jscoverage
-build/memcached
+build/bin/*
 build/coverage.html
 build/src
 build/output
