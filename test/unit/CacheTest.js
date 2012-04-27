@@ -191,7 +191,7 @@ describe('cache management', function() {
           done();
         }
       });
-    
+
       me2.get('blablablaaaa', function(error, value, expire) {
         value.should.eql('周华健');
         if ((--num) <= 0) {
@@ -283,7 +283,52 @@ describe('memcache test', function() {
     var _conf   = Config.create(__dirname + '/etc/memcache.ini');
     var _cache  = Memcache.create(_conf.get('servers'), _conf.get('options'));
 
-    done();
+    var _times  = 0;
+
+    _times++;
+    _cache.get('i_am_not_exists', function(error, result) {
+      should.ok(!error);
+      should.ok(null === result);
+      _cache.delete('i_am_not_exists', function(error, result) {
+        should.ok(!error);
+        if ((--_times) <= 0) {
+          done();
+        }
+      });
+    });
+
+    _times++;
+    _cache.set('key1', 'val1', function(error, result) {
+      _cache.set('key1', 'val2', function(error, result) {
+        should.ok(!error);
+        _cache.get('key1', function(error, result) {
+          should.ok(!error);
+          result.should.eql('val2');
+          if ((--_times) <= 0) {
+            done();
+          }
+        });
+      });
+    });
+
+    _times++;
+    _cache.set('key2', 0x1234, function(error, result) {
+      should.ok(!error);
+      _cache.get('key2', function(error, result) {
+        should.ok(!error);
+        result.should.eql(0x1234 + '');
+        _cache.delete('key2', function(error, result) {
+          should.ok(!error);
+          _cache.get('key2', function(error, result) {
+            should.ok(!error);
+            should.ok(null === result);
+            if ((--_times) <= 0) {
+              done();
+            }
+          });
+        });
+      });
+    });
   });
   /* }}} */
 

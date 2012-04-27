@@ -17,7 +17,7 @@ if (!path.existsSync(_props)) {
     'mysql.default.password'    : '',
     'mysql.default.dbname'      : '',
 
-    'memcache.default.host'     : '127.0.0.1:11211,localhost:11211',
+    'memcache.default.host'     : '127.0.0.1:11211,localhost:11213',
   });
 }
 
