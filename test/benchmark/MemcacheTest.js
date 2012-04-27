@@ -5,26 +5,30 @@ var Mcache  = require(__dirname + '/../../lib/cache/memcache.js');
 
 var _me = Mcache.create(Config.get('servers'), Config.get('options'));
 
-
+var num = 0;
+var run = 1;
 function setup(c) {
 
-  var n = 0;
   var c = c || 1000;
+  var n = 0;
 
-  function next(i) {
-    _me.set('benchmark_test_' + i, i, function(error, result) {
-      if ((++i) >= c) {
+  function next() {
+    num++;
+    _me.set('benchmark_test_' + n, n, function(error, result) {
+      n++;
+      if (!run) {
         return;
       }
-      next(i);
-    });
+      next();
+    }, 120);
   };
 
-  next(n);
+  next();
 }
 
 setInterval(function() {
   var m = process.memoryUsage();
-  console.log(m.rss + "\t" + m.heapTotal + "\t" + m.heapUsed);
+  console.log(num + "\t" + m.rss + "\t" + m.heapTotal + "\t" + m.heapUsed);
 }, 1000);
+
 setup(1000);
