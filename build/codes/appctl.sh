@@ -53,7 +53,7 @@ start() {
     fi
 
     echo "Start ${APPNAME} ... "
-    nohup ${NODEBIN} ${APPROOT}/bin/shark &
+    nohup ${NODEBIN} ${APPROOT}/bin/shark.js &
     for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then

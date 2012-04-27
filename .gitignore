@@ -2,12 +2,12 @@ node_modules
 log
 etc
 run
-default-*.properties
+*.properties
 test/unit/etc
 test/unit/log
 test/unit/tmp
 bin/appctl
-bin/shark
+bin/shark.js
 build/jscoverage
 build/coverage.html
 build/src

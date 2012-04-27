@@ -24,11 +24,11 @@ var _me = Builder.init(_props, __dirname + '/../');
 _me.makedir('test/unit/etc');
 _me.makedir('test/unit/tmp');
 
-_me.makeconf('build/tpl/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
-_me.makeconf('build/tpl/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
-_me.makeconf('build/tpl/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
+_me.makeconf('build/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
+_me.makeconf('build/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
+_me.makeconf('build/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
 
-_me.makeconf('build/tpl/test/mysql.ini',  'test/unit/etc/mysql_test.ini', {
+_me.makeconf('build/test/mysql.ini',  'test/unit/etc/mysql_test.ini', {
   'mysql.default.host'    : _me.$('mysql.default.host'),
   'mysql.default.port'    : _me.$('mysql.default.port'),
   'mysql.default.user'    : _me.$('mysql.default.user'),
@@ -42,9 +42,9 @@ _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
 });
 Builder.setmode('bin/appctl', 0755);
 
-_me.makeconf('build/codes/shark.js',    'bin/shark', {
+_me.makeconf('build/codes/shark.js',    'bin/shark.js', {
   'app.name'        : 'shark',
   'nodejs.bin'      : '/usr/local/bin/node',
 });
-Builder.setmode('bin/shark', 0755);
+Builder.setmode('bin/shark.js', 0755);
 
