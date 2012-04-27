@@ -5,6 +5,10 @@ declare -r __PATH=`pwd`
 declare -r __ROOT="$(cd -- $(dirname -- ${0}) && pwd)"
 declare -r JSCOVE="${__ROOT}/bin/jscoverage"
 
+if [ ! -d "${__ROOT}/bin" ] ; then
+    mkdir -p "${__ROOT}/bin"
+fi
+
 # {{{ function install_jscoverage() #
 install_jscoverage() {
     if [ ! -d "${__ROOT}/tmp" ] ; then

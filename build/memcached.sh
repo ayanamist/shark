@@ -5,6 +5,11 @@ declare -r __PATH=`pwd`
 declare -r __ROOT="$(cd -- $(dirname -- ${0}) && pwd)"
 declare -r MEMCACHE="${__ROOT}/bin/memcached"
 
+if [ ! -d "${__ROOT}/bin" ] ; then
+    mkdir -p "${__ROOT}/bin"
+fi
+
+# {{{ function install_memcached() #
 install_memcached() {
     if [ -d "${__ROOT}/tmp" ] ; then
         /bin/rm -rf "${__ROOT}/tmp"
@@ -22,6 +27,7 @@ install_memcached() {
         cp ./memcached "${MEMCACHE}" && chmod +x "${MEMCACHE}" && \
         /bin/rm -rf ${__ROOT}/tmp
 }
+# }}} #
 
 if [ ! -f "${MEMCACHE}" ] ; then
     install_memcached
