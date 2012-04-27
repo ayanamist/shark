@@ -63,7 +63,7 @@ describe('build library', function() {
     var the = (new Date()).getTime();
 
     _me.makedir(__dirname + '/etc/build').makedir('etc/build');
-    _me.makeconf(__dirname + '/../../build/tpl/test/test.properties', 'etc/build/test1.properties', {
+    _me.makeconf(__dirname + '/../../build/test/test.properties', 'etc/build/test1.properties', {
       'test.c3.value'   : the,
       'test.c5' : the,
     });
@@ -76,7 +76,7 @@ describe('build library', function() {
       'test.c4' : '##i.will.not.be.found##',
       'test.c5' : the + '',
     });
-    _me.makeconf(__dirname + '/../../build/tpl/test/test.properties', 'etc/build/test2.properties', {
+    _me.makeconf(__dirname + '/../../build/test/test.properties', 'etc/build/test2.properties', {
       'test.c3.value'       : _me.$('test.c1'),
       'i.will.not.be.found' : 'i.am.found',
     });
