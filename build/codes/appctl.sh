@@ -7,9 +7,9 @@ export LANG=en_US.UTF-8
 
 declare -r __PWD__=$(pwd)
 declare -r APPROOT=$(cd -- $(dirname -- ${0}) && cd .. && pwd)
-declare -r APPNAME=$(basename "${0}")
+declare -r APPNAME="##app.name##"
 
-declare -r PIDFILE="##app.pid.file##"
+declare -r PIDFILE="${APPROOT}/run/##app.name##.pid"
 declare -r NODEBIN="##nodejs.bin##"
 
 # {{{ function usage() #
