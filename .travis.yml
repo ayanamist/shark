@@ -4,6 +4,6 @@ node_js:
 
 before_script:
   - "mysql -e 'CREATE DATABASE test' -uroot"
-  - sh ./build/memcache.sh
+  - /bin/bash ./build/memcache.sh
 
 script: make test
