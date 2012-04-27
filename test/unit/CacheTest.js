@@ -9,6 +9,7 @@
 
 var should  = require('should');
 var Cache   = require(__dirname + '/../../lib/cache.js');
+var Config  = require(__dirname + '/../../lib/config.js');
 
 /* {{{ private function Handle() */
 /**
@@ -268,6 +269,21 @@ describe('cache management', function() {
     }, null, ['right', 'delay']);
 
 
+  });
+  /* }}} */
+
+});
+
+describe('memcache test', function() {
+
+  var Memcache  = require(__dirname + '/../../lib/cache/memcache.js');
+
+  /* {{{ should_memcache_set_get_delete_works_fine() */
+  it('should_memcache_set_get_delete_works_fine', function(done) {
+    var _conf   = Config.create(__dirname + '/etc/memcache.ini');
+    var _cache  = Memcache.create(_conf.get('servers'), _conf.get('options'));
+
+    done();
   });
   /* }}} */
 
