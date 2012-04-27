@@ -332,4 +332,20 @@ describe('memcache test', function() {
   });
   /* }}} */
 
+  /* {{{ should_memcache_set_binary_works_fine() */
+  it('should_memcache_set_binary_works_fine', function(done) {
+    var _conf   = Config.create(__dirname + '/etc/memcache.ini');
+    var _cache  = Memcache.create(_conf.get('servers'), _conf.get('options'));
+
+    _cache.set('key1', new Buffer('abc周华健'), function(error, result) {
+      should.ok(!error);
+      _cache.get('key1', function(error, result) {
+        should.ok(!error);
+        result.toString().should.eql('abc周华健');
+        done();
+      });
+    });
+  });
+  /* }}} */
+
 });
