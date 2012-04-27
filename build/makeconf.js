@@ -40,6 +40,7 @@ _me.makeconf('build/test/memcache.ini', 'test/unit/etc/memcache.ini', {
   'memcache.default.host'   : _me.$('memcache.default.host'),
 });
 
+_me.makedir('test/benchmark/etc');
 _me.makeconf('build/test/memcache.ini', 'test/benchmark/etc/memcache.ini', {
   'memcache.default.host'   : _me.$('memcache.default.host'),
 });
