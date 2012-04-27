@@ -18,7 +18,7 @@ install_memcached() {
         cd "${__ROOT}/tmp" && \
         wget "http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz" && \
         tar zxvf ./memcached-1.4.13.tar.gz && cd memcached-1.4.13 && \
-        ./configure --with-libevent=${__ROOT}/tmp/libevent-2.0.18-stable && make && \
+        ./configure --with-libevent=../libevent-2.0.18-stable && make && \
         cp ./memcached "${MEMCACHE}" && chmod +x "${MEMCACHE}" && \
         /bin/rm -rf ${__ROOT}/tmp
 }
