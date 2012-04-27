@@ -40,6 +40,10 @@ _me.makeconf('build/test/memcache.ini', 'test/unit/etc/memcache.ini', {
   'memcache.default.host'   : _me.$('memcache.default.host'),
 });
 
+_me.makeconf('build/test/memcache.ini', 'test/benchmark/etc/memcache.ini', {
+  'memcache.default.host'   : _me.$('memcache.default.host'),
+});
+
 _me.makedir('bin');
 _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
   'app.name'        : 'shark',
