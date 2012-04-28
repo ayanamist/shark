@@ -363,4 +363,25 @@ describe('memcache test', function() {
   });
   /* }}} */
 
+  /* {{{ should_multibyte_data_works_fine() */
+  xit('should_multibyte_data_works_fine', function(done) {
+    var _conf   = Config.create(__dirname + '/etc/memcache.ini');
+    var _cache  = Memcache.create(_conf.get('servers'), _conf.get('options'));
+    var message = '';
+
+    while (message.length < 1024 * 65) {
+      message += '周华健';
+    }
+
+    _cache.set('key1', message, function(error, result) {
+      should.ok(!error);
+      _cache.get('key1', function(error, result) {
+        should.ok(!error);
+        result.should.eql(message);
+        done();
+      });
+    });
+  });
+  /* }}} */
+
 });
