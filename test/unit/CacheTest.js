@@ -348,4 +348,19 @@ describe('memcache test', function() {
   });
   /* }}} */
 
+  /* {{{ should_memcache_get_value_with_end_works_fine() */
+  xit('should_memcache_get_value_with_end_works_fine', function(done) {
+    var _conf   = Config.create(__dirname + '/etc/memcache.ini');
+    var _cache  = Memcache.create(_conf.get('servers'), _conf.get('options'));
+    _cache.set('key1', "aa\r\nEND\r\n\r\nbb", function(error, result) {
+      should.ok(!error);
+      _cache.get('key1', function(error, result) {
+        should.ok(!error);
+        result.should.eql("aa\r\nEND\r\n\r\nbb");
+        done();
+      });
+    });
+  });
+  /* }}} */
+
 });

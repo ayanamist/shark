@@ -9,7 +9,6 @@ var num = 0;
 var run = 1;
 function setup(c) {
 
-  var c = c || 1000;
   var n = 0;
 
   function next() {
@@ -31,4 +30,4 @@ setInterval(function() {
   console.log(num + "\t" + m.rss + "\t" + m.heapTotal + "\t" + m.heapUsed);
 }, 1000);
 
-setup(1000);
+setup();
