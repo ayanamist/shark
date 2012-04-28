@@ -443,4 +443,41 @@ describe('redis cache test', function() {
   });
   /* }}} */
 
+  /* {{{ should_redis_set_binary_works_fine() */
+  it('should_redis_set_binary_works_fine', function(done) {
+    var _conf   = Config.create(__dirname + '/etc/redis.ini');
+    var _cache  = Redis.create(_conf.get('servers'), _conf.get('options'));
+
+    _cache.set('key1', new Buffer('abc周华健'), function(error, result) {
+      should.ok(!error);
+      _cache.get('key1', function(error, result) {
+        should.ok(!error);
+        result.toString().should.eql('abc周华健');
+        done();
+      });
+    });
+  });
+  /* }}} */
+
+  /* {{{ should_multibyte_data_works_fine() */
+  it('should_multibyte_data_works_fine', function(done) {
+    var _conf   = Config.create(__dirname + '/etc/redis.ini');
+    var _cache  = Redis.create(_conf.get('servers'), _conf.get('options'));
+    var message = '';
+
+    while (message.length < 1024 * 65) {
+      message += '周华健';
+    }
+
+    _cache.set('key1', message, function(error, result) {
+      should.ok(!error);
+      _cache.get('key1', function(error, result) {
+        should.ok(!error);
+        result.should.eql(message);
+        done();
+      });
+    });
+  });
+  /* }}} */
+
 });
