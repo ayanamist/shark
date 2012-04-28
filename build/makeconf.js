@@ -18,6 +18,11 @@ if (!path.existsSync(_props)) {
     'mysql.default.dbname'      : '',
 
     'memcache.default.host'     : '127.0.0.1:11211,localhost:11213',
+
+    /**
+     * @redis配置
+     */
+    'redis.default.host'        : '127.0.0.1:6379,localhost:6379',
   });
 }
 
@@ -39,10 +44,8 @@ _me.makeconf('build/test/mysql.ini',  'test/unit/etc/mysql_test.ini', {
 _me.makeconf('build/test/memcache.ini', 'test/unit/etc/memcache.ini', {
   'memcache.default.host'   : _me.$('memcache.default.host'),
 });
-
-_me.makedir('test/benchmark/etc');
-_me.makeconf('build/test/memcache.ini', 'test/benchmark/etc/memcache.ini', {
-  'memcache.default.host'   : _me.$('memcache.default.host'),
+_me.makeconf('build/test/memcache.ini', 'test/unit/etc/redis.ini', {
+  'memcache.default.host'   : _me.$('redis.default.host'),
 });
 
 _me.makedir('bin');

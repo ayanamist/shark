@@ -385,3 +385,62 @@ describe('memcache test', function() {
   /* }}} */
 
 });
+
+describe('redis cache test', function() {
+
+  var Redis = require(__dirname + '/../../lib/cache/redis.js');
+
+  /* {{{ should_redis_set_get_delete_works_fine() */
+  it('should_redis_set_get_delete_works_fine', function(done) {
+    var _conf   = Config.create(__dirname + '/etc/redis.ini');
+    var _cache  = Redis.create(_conf.get('servers'), _conf.get('options'));
+
+    var _times  = 0;
+
+    _times++;
+    _cache.delete('i_am_not_exists', function(error) {
+      should.ok(!error);
+      _cache.get('i_am_not_exists', function(error, result) {
+        should.ok(!error);
+        if ((--_times) <= 0) {
+          done();
+        }
+      });
+    });
+
+    _times++;
+    _cache.set('key1', 'val1', function(error, result) {
+      _cache.set('key1', 'val2', function(error, result) {
+        should.ok(!error);
+        _cache.get('key1', function(error, result) {
+          should.ok(!error);
+          result.should.eql('val2');
+          if ((--_times) <= 0) {
+            done();
+          }
+        });
+      });
+    });
+
+    _times++;
+    _cache.set('key2', 0x1234, function(error, result) {
+      should.ok(!error);
+      _cache.get('key2', function(error, result) {
+        should.ok(!error);
+        result.should.eql(0x1234 + '');
+        _cache.delete('key2', function(error, result) {
+          should.ok(!error);
+          _cache.get('key2', function(error, result) {
+            should.ok(!error);
+            should.ok(null === result);
+            if ((--_times) <= 0) {
+              done();
+            }
+          });
+        });
+      });
+    });
+  });
+  /* }}} */
+
+});

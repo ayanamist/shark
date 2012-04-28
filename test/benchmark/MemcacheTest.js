@@ -1,9 +1,8 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 
-var Config  = require(__dirname + '/../../lib/config.js').create(__dirname + '/etc/memcache.ini');
 var Mcache  = require(__dirname + '/../../lib/cache/memcache.js');
 
-var _me = Mcache.create(Config.get('servers'), Config.get('options'));
+var _me = Mcache.create('127.0.0.1:11211,127.0.0.1:11211');
 
 var num = 0;
 var run = 1;
