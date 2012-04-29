@@ -67,6 +67,9 @@ describe('file config', function() {
         'key1'  : 'aa',
         'key3'  : 'bb',
       },
+      'iplist'  : {
+        '127.0.0.1' : 30,
+      },
     });
   });
   /* }}} */
