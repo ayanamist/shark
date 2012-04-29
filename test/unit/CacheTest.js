@@ -70,7 +70,7 @@ var Keeper  = function() {
     }
     callback && callback(null);
   };
-  _me.load  = function(callback) {
+  _me.load  = function(callback, _after) {
     callback(_info.error ? (new Error('TestError')) : null, _info);
   };
 
@@ -259,7 +259,7 @@ describe('cache management', function() {
                       should.ok(null === value);
                       done();
                     });
-                  }, 80);
+                  }, 20);
                 });
               });
             }, 1);
