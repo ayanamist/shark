@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 # vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: #
 
 export LANG=en_US.UTF-8
@@ -53,7 +53,7 @@ start() {
     fi
 
     echo -n "start ${APPNAME} ... "
-    nohup ${NODEBIN} ${APPROOT}/bin/shark.js &> /dev/null &
+    nohup ${NODEBIN} ${APPROOT}/bin/shark.js &> "##log.root##stdout.log" &
     for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then
