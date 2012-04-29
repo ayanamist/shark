@@ -18,6 +18,10 @@ if [ ! -d "${LOGROOT}/${LOGDATE}" ] ; then
     mkdir -p "${LOGROOT}/${LOGDATE}"
 fi
 
+if [ ! -d "${LOGROOT}/${LOGDATE}" ] ; then
+    exit 2
+fi
+
 for _file in $(find -- "${LOGROOT}" -type f) ; do
     echo ${_file}
     if [ 0 ] ; then
@@ -26,11 +30,9 @@ for _file in $(find -- "${LOGROOT}" -type f) ; do
     mv -f "${_file}" "${LOGROOT}/${LOGDATE}/"
 done
 
-cd "${APPROOT}" && ./bin/appctl reload
-
-cd "${LOGROOT}/${LOGDATE}"
+cd "${APPROOT}" && ./bin/appctl reload && cd "${LOGROOT}/${LOGDATE}"
 if [ ${?} -ne 0 ] ; then
-    exit 2
+    exit 3
 fi
 
 for _file in $(find . -type f) ; do
@@ -38,4 +40,4 @@ for _file in $(find . -type f) ; do
 done
 
 cd "${__PWD__}"
-
+exit 0
