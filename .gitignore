@@ -6,8 +6,7 @@ run
 test/unit/etc
 test/unit/log
 test/unit/tmp
-bin/appctl
-bin/shark.js
+bin/*
 build/bin/*
 build/coverage.html
 build/src
