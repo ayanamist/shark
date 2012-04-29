@@ -49,6 +49,7 @@ _me.makeconf('build/test/memcache.ini', 'test/unit/etc/redis.ini', {
 });
 
 _me.makedir('bin');
+_me.makedir(_me.$('log.root'));
 _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
   'app.name'        : 'shark',
   'nodejs.bin'      : '/usr/local/bin/node',
@@ -62,8 +63,8 @@ _me.makeconf('build/codes/shark.js',    'bin/shark.js', {
 });
 Builder.setmode('bin/shark.js', 0755);
 
-_me.makeconf('build/codes/logrotate.sh',   'bin/logrotate.sh', {
+_me.makeconf('build/codes/logrotate.sh',   'bin/logrotate', {
   'log.root'        : _me.$('log.root')
 });
-Builder.setmode('bin/logrotate.sh', 0755);
+Builder.setmode('bin/logrotate', 0755);
 

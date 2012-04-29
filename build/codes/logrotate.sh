@@ -22,11 +22,7 @@ if [ ! -d "${LOGROOT}/${LOGDATE}" ] ; then
     exit 2
 fi
 
-for _file in $(find -- "${LOGROOT}" -type f) ; do
-    echo ${_file}
-    if [ 0 ] ; then
-        continue;
-    fi
+for _file in $(find -- "${LOGROOT}" -maxdepth 1 -type f -name "*.log") ; do
     mv -f "${_file}" "${LOGROOT}/${LOGDATE}/"
 done
 
@@ -35,7 +31,10 @@ if [ ${?} -ne 0 ] ; then
     exit 3
 fi
 
-for _file in $(find . -type f) ; do
+for _file in $(find . -type f | grep -v -E "\.tar\.gz$") ; do
+    if [ $(file -- "${_file}" | grep -c -w "gzip") -gt 0 ] ; then
+        continue
+    fi
     tar cvzf "${_file}.${LOGDATE}.tar.gz" ${_file} && rm -f ${_file}
 done
 
