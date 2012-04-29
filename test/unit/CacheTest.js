@@ -52,18 +52,20 @@ var Keeper  = function() {
   var _me   = {};
   _me.write = function(name, value, callback) {
     name    = name.trim().toLowerCase();
+    if ('delay' == name) {
+      // XXX: 模拟异步write方法
+      setTimeout(function() {
+        _info[name] = Math.max(value, _info[name] ? _info[name] : 0);
+        callback && callback(true);
+      }, 5);
+    
+      return;
+    }
+
     switch (name) {
       case 'right':
         _info[name] = Math.max(value, _info[name] ? _info[name] : 0);
         break;
-
-      case 'delay':
-        // XXX: 模拟异步write方法
-        setTimeout(function() {
-          _info[name] = Math.max(value, _info[name] ? _info[name] : 0);
-        }, 5);
-        break;
-
       default:
         _info[name] = value;
         break;
