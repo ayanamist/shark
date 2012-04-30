@@ -79,7 +79,7 @@ stop() {
     fi
 
     echo -n "stop ${APPNAME} (PID=${pid}) ... "
-    kill -s SIGTERM ${pid}
+    kill -15 ${pid}
     for t in 1 1 2 3 3 ; do
         sleep ${t}
         still ${pid}
@@ -114,14 +114,27 @@ reload() {
         return
     fi
 
+    local sub=$(ps --ppid ${pid} | grep -v -w "PID" | awk '{print $1}')
     echo -n "Reload ${APPNAME} (PID=${pid}) ... "
-    kill -s SIGUSR1 ${pid}
-    if [ ${?} -eq 0 ] ; then
-        echo_success
-    else
-        echo_failure
-    fi
-    echo
+    kill -10 ${pid}
+    for _time in 1 1 2 3 3 ; do
+        local has=0
+        for _pid in ${sub} ; do
+            if [ -d "/proc/${_pid}" ] ; then
+                has=1
+            fi
+        done
+
+        if [ ${has} -eq 0 ] ; then
+            echo_success
+            echo
+            return
+        fi
+        sleep ${_time}
+    done
+
+    stop
+    start
 }
 # }}} #
 
