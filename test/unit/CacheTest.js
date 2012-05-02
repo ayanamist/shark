@@ -58,7 +58,7 @@ var Keeper  = function() {
         _info[name] = Math.max(value, _info[name] ? _info[name] : 0);
         callback && callback(true);
       }, 5);
-    
+
       return;
     }
 
@@ -271,6 +271,39 @@ describe('cache management', function() {
     }, null, ['right', 'delay']);
 
 
+  });
+  /* }}} */
+
+  /* {{{ should_cache_protected_after_update_works_fine() */
+  it('should_cache_protected_after_update_works_fine', function(done) {
+    var _me = Cache.create('test7', Handle(), null, {
+      'open_cache_lantency' : 5,
+    });
+
+    _me.set('key1', 'val1', function(error) {
+      should.ok(!error);
+      _me.get('key1', function(error, result, expire) {
+        should.ok(!error);
+        result.should.eql('val1');
+
+        _me.tagrm('tag1');
+        _me.set('key1', 'val1', function(error) {
+          should.ok(!error);
+          _me.get('key1', function(error, result, expire) {
+            should.ok(!error);
+            should.ok(null === result);
+            setTimeout(function() {
+              _me.set('key1', 'val1', function(error){
+                _me.get('key1', function(error, result, expire) {
+                  result.should.eql('val1');
+                  done();
+                });
+              }, null, ['tag1']);
+            }, 7);
+          });
+        }, null, ['tag1']);
+      });
+    }, null, ['tag1']);
   });
   /* }}} */
 
