@@ -276,9 +276,7 @@ describe('cache management', function() {
 
   /* {{{ should_cache_protected_after_update_works_fine() */
   it('should_cache_protected_after_update_works_fine', function(done) {
-    var _me = Cache.create('test7', Handle(), null, {
-      'open_cache_lantency' : 5,
-    });
+    var _me = Cache.create('test7', Handle(), null);
 
     _me.set('key1', 'val1', function(error) {
       should.ok(!error);
@@ -286,7 +284,7 @@ describe('cache management', function() {
         should.ok(!error);
         result.should.eql('val1');
 
-        _me.tagrm('tag1');
+        _me.tagrm('tag1', 3);
         _me.set('key1', 'val1', function(error) {
           should.ok(!error);
           _me.get('key1', function(error, result, expire) {
