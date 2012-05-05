@@ -17,21 +17,24 @@ describe('connection pool', function() {
       'query' : function(callback) {
         setTimeout(callback, 2);
       },
+  'close'   : function() {
+  },
     }
   };
 
   /* {{{ should_pool_create_works_fine() */
-  it('should_pool_create_works_fine', function(done) {
+  xit('should_pool_create_works_fine', function(done) {
     var num = 6;
     var _me = Pool.create(connector, {
-      'idle' : 10, 'min' : 2, 'max' : 4,
+      'idle' : 100, 'size' : 4,
     });
 
+    var beg = (new Date()).getTime();
     var ids = [];
     for (var i = 0; i < num; i++) {
       _me.get(function(who, id) {
+        ids.push(id);
         who.query(function() {
-          ids.push(id);
           _me.free(id);
           if ((--num) == 0) {
             ids.should.eql([3,2,1,0,0,1]);
@@ -40,6 +43,23 @@ describe('connection pool', function() {
         });
       });
     }
+  });
+  /* }}} */
+
+  /* {{{ should_close_idle_connection_works_fine() */
+  it('should_close_idle_connection_works_fine', function(done) {
+    var _me = Pool.create(connector, {
+      'idle' : 100, 'size' : 4,
+    });
+    _me.get(function(who, id) {
+      id.should.eql(0);
+      _me.free(id);
+      _me.get(function(who, id) {
+        id.should.eql(0);
+        _me.free(id);
+        done();
+      });
+    });
   });
   /* }}} */
 
