@@ -22,8 +22,8 @@ describe('connection pool', function() {
     }
   };
 
-  /* {{{ should_pool_create_works_fine() */
-  xit('should_pool_create_works_fine', function(done) {
+  /* {{{ should_pool_create_and_idle_works_fine() */
+  it('should_pool_create_and_idle_works_fine', function(done) {
     var num = 6;
     var _me = Pool.create(connector, {
       'idle' : 100, 'size' : 4,
@@ -37,29 +37,18 @@ describe('connection pool', function() {
         who.query(function() {
           _me.free(id);
           if ((--num) == 0) {
-            ids.should.eql([3,2,1,0,0,1]);
-            done();
+            ids.should.eql([0,1,2,3,3,2]);
+            setTimeout(function() {
+              _me.get(function(who, id) {
+                // XXX: 空闲超过100ms，断开重连
+                id.should.eql(0);
+                done();
+              });
+            }, 110);
           }
         });
       });
     }
-  });
-  /* }}} */
-
-  /* {{{ should_close_idle_connection_works_fine() */
-  it('should_close_idle_connection_works_fine', function(done) {
-    var _me = Pool.create(connector, {
-      'idle' : 100, 'size' : 4,
-    });
-    _me.get(function(who, id) {
-      id.should.eql(0);
-      _me.free(id);
-      _me.get(function(who, id) {
-        id.should.eql(0);
-        _me.free(id);
-        done();
-      });
-    });
   });
   /* }}} */
 
