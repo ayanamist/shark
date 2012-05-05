@@ -12,9 +12,23 @@ var Pool    = require(__dirname + '/../../lib/pool.js');
 
 describe('connection pool', function() {
 
+  var connector = function() {
+    return {
+      'query' : function() {
+      },
+    }
+  };
+
   /* {{{ should_pool_create_works_fine() */
   it('should_pool_create_works_fine', function(done) {
-    done();
+    var _me = Pool.create(connector, {
+      'idle' : 100,
+    });
+
+    _me.get(function(who, id) {
+      console.log(who);
+      done();
+    });
   });
   /* }}} */
 
