@@ -42,13 +42,22 @@ var master  = require('node-cluster').Master(config.get('master', {
   'pidfile' : Home + '/run/##app.name##.pid',
 }));
 
+/* {{{ register worker(s) for master */
+
 var options = config.all();
 for (var key in options) {
   var match = key.match(/worker:(\w+)/);
   var child = options[key];
   if (match && child.script) {
+    if (child.args) {
+      child.args = child.args.split(' ');
+    } else {
+      child.args = [];
+    }
     master.register(match[1], child.script, child);
   }
 }
+
+/* }}} */
 
 master.dispatch();

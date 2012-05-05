@@ -9,8 +9,9 @@ test: init
 	./node_modules/mocha/bin/mocha --reporter spec --timeout 5000 test/unit/*.js
 
 func: init
+	@./bin/appctl restart
 	-./node_modules/mocha/bin/mocha --reporter spec --timeout 10000 test/func/*.js
-	ps ux | grep node | grep -v grep | awk '{print $$2}' | xargs kill -9 
+	@./bin/appctl stop
 
 cov: clean init
 	@/bin/bash ./build/jscoverage.sh
