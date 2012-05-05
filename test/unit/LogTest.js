@@ -98,7 +98,7 @@ describe('file log', function() {
 
   /* {{{ should_log_blackhole_works_fine() */
   it('should_log_blackhole_works_fine', function() {
-    var _log = Log.blackhole();
+    var _log = require(__dirname + '/../../lib/blackhole/log.js').create();
     _log.should.have.property('debug');
     _log.should.have.property('notice');
     _log.should.have.property('warn');
