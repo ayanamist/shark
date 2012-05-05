@@ -14,21 +14,32 @@ describe('connection pool', function() {
 
   var connector = function() {
     return {
-      'query' : function() {
+      'query' : function(callback) {
+        setTimeout(callback, 2);
       },
     }
   };
 
   /* {{{ should_pool_create_works_fine() */
   it('should_pool_create_works_fine', function(done) {
+    var num = 6;
     var _me = Pool.create(connector, {
-      'idle' : 100,
+      'idle' : 10, 'min' : 2, 'max' : 4,
     });
 
-    _me.get(function(who, id) {
-      console.log(who);
-      done();
-    });
+    var ids = [];
+    for (var i = 0; i < num; i++) {
+      _me.get(function(who, id) {
+        who.query(function() {
+          ids.push(id);
+          _me.free(id);
+          if ((--num) == 0) {
+            ids.should.eql([3,2,1,0,0,1]);
+            done();
+          }
+        });
+      });
+    }
   });
   /* }}} */
 
