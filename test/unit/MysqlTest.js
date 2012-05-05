@@ -57,7 +57,7 @@ describe('mysql pool with libmysqlclient', function() {
 
   /* {{{ should_mysql_blackhole_works_fine() */
   it('should_mysql_blackhole_works_fine', function(done) {
-    var mysql   = Mysql.blackhole();
+    var mysql   = require(__dirname + '/../../lib/blackhole/mysql.js').create();
     mysql.query('select', function(error, data) {
       error.toString().should.include('MysqlBlackhole');
       done();

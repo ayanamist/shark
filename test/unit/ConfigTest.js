@@ -74,4 +74,12 @@ describe('file config', function() {
   });
   /* }}} */
 
+  /* {{{ should_config_blackhole_works_fine() */
+  it('should_config_blackhole_works_fine', function() {
+    var _me = require(__dirname + '/../../lib/blackhole/config.js').create();
+    (_me.get('aa', 'default')).should.eql('default');
+    _me.all().should.eql({});
+  });
+  /* }}} */
+
 });
