@@ -19,7 +19,7 @@ var Builder = require(Home + '/lib/build.js');
 var _maker  = Builder.init(Home + '/##app.name##.properties', Home);
 
 _maker.makedir('run');
-_maker.makedir('etc');
+_maker.makedir('.etc');
 
 var confdir = Path.normalize(Home + '/build/tpl');
 Builder.fileset(confdir, function(fname) {
@@ -28,7 +28,7 @@ Builder.fileset(confdir, function(fname) {
     return;
   }
 
-  var _file = Home + '/etc/' + _base;
+  var _file = Home + '/.etc/' + _base;
   _maker.makedir(Path.dirname(_file));
   _maker.makeconf(fname, _file, {
     'app.name'  : '##app.name##',
@@ -37,13 +37,18 @@ Builder.fileset(confdir, function(fname) {
 
 /* }}} */
 
-//process.exit();
-var master  = require('node-cluster').Master({
+var config  = require(Home + '/lib/config.js').create(Home + '/.etc/master.ini');
+var master  = require('node-cluster').Master(config.get('master', {
   'pidfile' : Home + '/run/##app.name##.pid',
-});
+}));
 
-/**
- * @THIS IS ONLY A DEMO
- */
-master.register(33751, __dirname + '/../node_modules/node-cluster/demo/worker/http.js');
+var options = config.all();
+for (var key in options) {
+  var match = key.match(/worker:(\w+)/);
+  var child = options[key];
+  if (match && child.script) {
+    master.register(match[1], child.script, child);
+  }
+}
+
 master.dispatch();
