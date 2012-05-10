@@ -11,12 +11,20 @@
 
 var Path    = require('path');
 var Home    = __dirname + '/../';
-
 var Builder = require(Home + '/lib/build.js');
+
+var _props  = Home + '/##app.name##.properties';
+if (process.argv.length > 2) {
+  _props    = Path.normalize(process.argv[2]);
+}
+if (!Path.existsSync(_props)) {
+  console.log('Property file (' + _props + ') not found.');
+  process.exit(1);
+}
 
 /* {{{ config files builder  */
 
-var _maker  = Builder.init(Home + '/##app.name##.properties', Home);
+var _maker  = Builder.init(_props, Home);
 
 _maker.makedir('run');
 _maker.makedir('.etc');
