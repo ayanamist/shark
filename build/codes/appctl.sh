@@ -9,6 +9,7 @@ declare -r __PWD__=$(pwd)
 declare -r APPROOT=$(cd -- $(dirname -- ${0}) && cd .. && pwd)
 declare -r APPNAME="##app.name##"
 
+declare -r PROPERTIS="##properties##"
 declare -r PIDFILE="${APPROOT}/run/##app.name##.pid"
 declare -r NODEBIN="##nodejs.bin##"
 
@@ -53,7 +54,7 @@ start() {
     fi
 
     echo -n "start ${APPNAME} ... "
-    nohup ${NODEBIN} ${APPROOT}/bin/shark.js &> "##log.root####app.name##.stdout" &
+    nohup ${NODEBIN} ${APPROOT}/bin/shark.js ${PROPERTIS} &> "##log.root####app.name##.stdout" &
     for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then

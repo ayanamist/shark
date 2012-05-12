@@ -8,8 +8,11 @@ var _props  = path.normalize(__dirname + '/../default-' + os.hostname() + '-' + 
 if (!path.existsSync(_props)) {
   var _me = Builder.init();
   _me.makeconf('build/tpl/default.properties', _props, {
-    'dir.root'    : path.normalize(__dirname + '/../'),
-    'log.root'    : path.normalize(__dirname + '/../log/'),
+    'dir.root'      : path.normalize(__dirname + '/../'),
+    'log.root'      : path.normalize(__dirname + '/../log/'),
+
+    /**<    properties文件 */
+    'properties'    : _props,
 
     'mysql.default.host'        : '127.0.0.1,localhost',
     'mysql.default.port'        : 3306,
@@ -53,7 +56,8 @@ _me.makedir(_me.$('log.root'));
 _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
   'app.name'        : 'shark',
   'nodejs.bin'      : '/usr/local/bin/node',
-  'log.root'        : _me.$('log.root')
+  'log.root'        : _me.$('log.root'),
+  'properties'      : _me.$('properties'),
 });
 Builder.setmode('bin/appctl', 0755);
 
