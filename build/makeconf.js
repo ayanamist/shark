@@ -11,9 +11,6 @@ if (!path.existsSync(_props)) {
     'dir.root'      : path.normalize(__dirname + '/../'),
     'log.root'      : path.normalize(__dirname + '/../log/'),
 
-    /**<    properties文件 */
-    'properties'    : _props,
-
     'mysql.default.host'        : '127.0.0.1,localhost',
     'mysql.default.port'        : 3306,
     'mysql.default.user'        : 'root',
@@ -57,7 +54,7 @@ _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
   'app.name'        : 'shark',
   'nodejs.bin'      : '/usr/local/bin/node',
   'log.root'        : _me.$('log.root'),
-  'properties'      : _me.$('properties'),
+  'properties'      : _props,
 });
 Builder.setmode('bin/appctl', 0755);
 
