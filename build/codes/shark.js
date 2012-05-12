@@ -13,7 +13,7 @@ var Path    = require('path');
 var Home    = __dirname + '/../';
 var Builder = require(Home + '/lib/build.js');
 
-var _props  = Home + '/##app.name##.properties';
+var _props  = Home + '##app.name##.properties';
 if (process.argv.length > 2) {
   _props    = Path.normalize(process.argv[2]);
 }
@@ -29,14 +29,14 @@ var _maker  = Builder.init(_props, Home);
 _maker.makedir('run');
 _maker.makedir('.etc');
 
-var confdir = Path.normalize(Home + '/build/tpl');
+var confdir = Path.normalize(Home + 'build/tpl');
 Builder.fileset(confdir, function(fname) {
   var _base = fname.slice(1 + confdir.length);
   if (_base.match(/\.properties$/)) {
     return;
   }
 
-  var _file = Home + '/.etc/' + _base;
+  var _file = Home + '.etc/' + _base;
   _maker.makedir(Path.dirname(_file));
   _maker.makeconf(fname, _file, {
     'app.name'  : '##app.name##',
@@ -45,9 +45,9 @@ Builder.fileset(confdir, function(fname) {
 
 /* }}} */
 
-var config  = require(Home + '/lib/config.js').create(Home + '/.etc/master.ini');
+var config  = require(Home + 'lib/config.js').create(Home + '.etc/master.ini');
 var master  = require('node-cluster').Master(config.get('master', {
-  'pidfile' : Home + '/run/##app.name##.pid',
+  'pidfile' : Home + 'run/##app.name##.pid',
 }));
 
 /* {{{ register worker(s) for master */
