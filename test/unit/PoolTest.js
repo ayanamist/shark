@@ -52,4 +52,24 @@ describe('connection pool', function() {
   });
   /* }}} */
 
+  /* {{{ should_pool_remove_works_fine() */
+  it('should_pool_remove_works_fine', function(done) {
+    var _me = Pool.create(connector, {'idle' : 300000, 'size' : 2});
+    _me.get(function(me1, id1) {
+      id1.should.eql(0);
+      _me.get(function(me2, id2) {
+        _me.free(id1);
+        _me.free(id2);
+        _me.remove(id2);        /**<    模拟有错误，断掉长连接  */
+        _me.free(id2);
+        _me.get(function(me3, id3) {
+          id3.should.eql(0);
+          _me.free(id3);
+          done();
+        });
+      });
+    });
+  });
+  /* ]}} */
+
 });
