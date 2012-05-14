@@ -9,13 +9,12 @@ declare -r __PWD__=$(pwd)
 declare -r APPROOT=$(cd -- $(dirname -- ${0}) && cd .. && pwd)
 declare -r APPNAME="##app.name##"
 
-declare -r PROPERTIS="##properties##"
 declare -r PIDFILE="${APPROOT}/run/##app.name##.pid"
 declare -r NODEBIN="##nodejs.bin##"
 
 # {{{ function usage() #
 usage() {
-    echo "${0} {start|stop|reload|restart|status}"
+    echo "${0} {start [properties-file]|stop|reload|restart|status}"
     exit 1;
 }
 # }}} #
@@ -53,8 +52,13 @@ start() {
         return
     fi
 
+    if [ ! -f "${1}" ] ; then
+        echo "properities file (${1}) not found."
+        return
+    fi
+
     echo -n "start ${APPNAME} ... "
-    nohup ${NODEBIN} ${APPROOT}/bin/shark.js ${PROPERTIS} &> "##log.root####app.name##.stdout" &
+    nohup ${NODEBIN} ${APPROOT}/bin/shark.js ${1} &> "##log.root####app.name##.stdout" &
     for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then
@@ -150,10 +154,15 @@ status() {
 }
 # }}} #
 
+declare __PROPERTIES="${APPROOT}/${APPNAME}.properties"
+if [ ${#} -gt 1 ] ; then
+    __PROPERTIES=$(readlink -f -- "${2}")
+fi
+
 cd ${__PWD__}
 case "${1}" in
     start)
-        start;;  
+        start "${__PROPERTIES}";;  
     stop)
         stop;;
     restart)
