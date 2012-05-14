@@ -54,7 +54,6 @@ _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
   'app.name'        : 'shark',
   'nodejs.bin'      : '/usr/local/bin/node',
   'log.root'        : _me.$('log.root'),
-  'properties'      : _props,
 });
 Builder.setmode('bin/appctl', 0755);
 
