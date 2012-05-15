@@ -6,12 +6,23 @@ export LANG=en_US.UTF-8
 declare -r __PWD__=$(pwd)
 declare -r APPROOT=$(cd -- $(dirname -- ${0}) && cd .. && pwd)
 
-declare -r LOGROOT="##log.root##"
+# {{{ function usage() #
+usage() {
+    echo "${0} log-directory"
+}
+# }}} #
+
+if [ ${#} -lt 1 ] ; then
+    usage
+    exit 1
+fi
+
+declare -r LOGROOT=$(readlink -f -- "${1}")
 declare -r LOGDATE=$(date -d"-1day" +"%Y%m%d")
 
 if [ ! -d "${LOGROOT}" ] ; then
     echo "LOG.ROOT (${LOGROOT}) not found."
-    exit 1
+    exit 2
 fi
 
 if [ ! -d "${LOGROOT}/${LOGDATE}" ] ; then
@@ -19,7 +30,7 @@ if [ ! -d "${LOGROOT}/${LOGDATE}" ] ; then
 fi
 
 if [ ! -d "${LOGROOT}/${LOGDATE}" ] ; then
-    exit 2
+    exit 3
 fi
 
 for _file in $(find -- "${LOGROOT}" -maxdepth 1 -type f -name "*.log") ; do
@@ -28,7 +39,7 @@ done
 
 cd "${APPROOT}" && ./bin/appctl reload && cd "${LOGROOT}/${LOGDATE}"
 if [ ${?} -ne 0 ] ; then
-    exit 3
+    exit 4
 fi
 
 for _file in $(find . -type f | grep -v -E "\.tar\.gz$") ; do

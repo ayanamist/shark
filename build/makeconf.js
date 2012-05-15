@@ -63,8 +63,6 @@ _me.makeconf('build/codes/shark.js',    'bin/shark.js', {
 });
 Builder.setmode('bin/shark.js', 0755);
 
-_me.makeconf('build/codes/logrotate.sh',   'bin/logrotate', {
-  'log.root'        : _me.$('log.root')
-});
+_me.makeconf('build/codes/logrotate.sh',   'bin/logrotate');
 Builder.setmode('bin/logrotate', 0755);
 
