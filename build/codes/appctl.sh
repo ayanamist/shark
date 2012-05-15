@@ -58,7 +58,7 @@ start() {
     fi
 
     echo -n "start ${APPNAME} ... "
-    nohup ${NODEBIN} ${APPROOT}/bin/shark.js ${1} &> "##log.root####app.name##.stdout" &
+    nohup ${NODEBIN} ${APPROOT}/bin/shark.js ${1} &
     for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then
