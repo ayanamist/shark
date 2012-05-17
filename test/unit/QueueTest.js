@@ -8,7 +8,7 @@
 // Author: pengchun <pengchun@taobao.com>
 
 var should  = require('should');
-var Queque	= require(__dirname + '/../../lib/queque.js');
+var Queque	= require(__dirname + '/../../lib/queue.js');
 
 describe('priority queque', function() {
 
