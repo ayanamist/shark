@@ -29,7 +29,7 @@ describe('mysql pool with libmysqlclient', function() {
   /* }}} */
 
   /* {{{ should_sleep_100ms_async_run_works_fine() */
-  it('should_sleep_100ms_async_run_works_fine', function(done) {
+  xit('should_sleep_100ms_async_run_works_fine', function(done) {
     var mysql   = Mysql.create(options);
     var total   = 5;
     var dones   = 0;
