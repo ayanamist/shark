@@ -29,7 +29,7 @@ switch (process.argv.slice(2).unshift()) {
     break;
 
   default:
-    _cache  = require(__dirname + '/../../lib/cache/memcache.js').create('127.0.0.1:11211');
+    _cache  = require(__dirname + '/../../lib/cache/redis.js').create('127.0.0.1:6379');
     break;
 }
 

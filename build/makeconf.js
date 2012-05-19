@@ -17,8 +17,6 @@ if (!path.existsSync(_props)) {
     'mysql.default.password'    : '',
     'mysql.default.dbname'      : '',
 
-    'memcache.default.host'     : '127.0.0.1:11211,localhost:11213',
-
     /**
      * @redis配置
      */
@@ -35,17 +33,14 @@ _me.makeconf('build/test/test_config_file.ini',   'test/unit/etc/test_config_fil
 _me.makeconf('build/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
 _me.makeconf('build/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
 
-_me.makeconf('build/test/mysql.ini',  'test/unit/etc/mysql_test.ini', {
+_me.makeconf('build/test/mysql.ini',    'test/unit/etc/mysql_test.ini', {
   'mysql.default.host'      : _me.$('mysql.default.host'),
   'mysql.default.port'      : _me.$('mysql.default.port'),
   'mysql.default.user'      : _me.$('mysql.default.user'),
   'mysql.default.pass'      : _me.$('mysql.default.password'),
 });
-_me.makeconf('build/test/memcache.ini', 'test/unit/etc/memcache.ini', {
-  'memcache.default.host'   : _me.$('memcache.default.host'),
-});
-_me.makeconf('build/test/memcache.ini', 'test/unit/etc/redis.ini', {
-  'memcache.default.host'   : _me.$('redis.default.host'),
+_me.makeconf('build/test/redis.ini',    'test/unit/etc/redis.ini', {
+  'redis.default.host'   : _me.$('redis.default.host'),
 });
 
 _me.makedir('bin');
