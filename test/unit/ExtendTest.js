@@ -94,6 +94,7 @@ describe('object extends', function() {
 
   /* {{{ should_string_escape_works_fine() */
   it('should_string_escape_works_fine', function() {
+    Extend.escape(123.456).should.eql(123.456);
     Extend.escape('i\'m 黒\\牛	1"2').should.eql('i\\\'m 黒\\\\牛\\t1\\"2');
   });
   /* }}} */
