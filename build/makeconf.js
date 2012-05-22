@@ -4,6 +4,34 @@ var os = require('os'), path = require('path');
 
 var Builder = require(__dirname + '/../lib/build.js');
 
+/**
+ * @强制参数 
+ */
+var _force  = {};
+
+/* {{{ process argv parse */
+
+process.argv.slice(2).forEach(function (arg) {
+  if (!(/^\-D/.test(arg))) {
+    return;
+  }
+
+  var pattern   = arg.slice(2).split('=');
+  switch (pattern.length) {
+    case 0:
+      break;
+
+    case 1:
+      _force[pattern[0]]    = true;
+      break;
+
+    default:
+      _force[pattern[0]]    = pattern[1];
+      break;
+  }
+});
+/* }}} */
+
 var _props  = path.normalize(__dirname + '/../default-' + os.hostname() + '-' + os.arch() + '.properties');
 if (!path.existsSync(_props)) {
   var _me = Builder.init();
@@ -25,6 +53,9 @@ if (!path.existsSync(_props)) {
 }
 
 var _me = Builder.init(_props, __dirname + '/../');
+var $   = function (key) {
+  return _force[key] || _me.$(key);
+};
 
 _me.makedir('test/unit/etc');
 _me.makedir('test/unit/tmp');
@@ -34,13 +65,13 @@ _me.makeconf('build/test/test_config_file.js',    'test/unit/etc/test_config_fil
 _me.makeconf('build/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
 
 _me.makeconf('build/test/mysql.ini',    'test/unit/etc/mysql_test.ini', {
-  'mysql.default.host'      : _me.$('mysql.default.host'),
-  'mysql.default.port'      : _me.$('mysql.default.port'),
-  'mysql.default.user'      : _me.$('mysql.default.user'),
-  'mysql.default.pass'      : _me.$('mysql.default.password'),
+  'mysql.default.host'      : $('mysql.default.host'),
+  'mysql.default.port'      : $('mysql.default.port'),
+  'mysql.default.user'      : $('mysql.default.user'),
+  'mysql.default.pass'      : $('mysql.default.password'),
 });
 _me.makeconf('build/test/redis.ini',    'test/unit/etc/redis.ini', {
-  'redis.default.host'   : _me.$('redis.default.host'),
+  'redis.default.host'      : $('redis.default.host'),
 });
 
 _me.makedir('bin');
@@ -48,7 +79,7 @@ _me.makedir(_me.$('log.root'));
 _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
   'app.name'        : 'shark',
   'nodejs.bin'      : '/usr/local/bin/node',
-  'log.root'        : _me.$('log.root'),
+  'log.root'        : $('log.root'),
 });
 Builder.setmode('bin/appctl', 0755);
 
