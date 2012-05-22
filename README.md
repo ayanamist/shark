@@ -4,6 +4,12 @@
 
 # Usage #
 
+# Coverage #
+
+We use [node-jscoverage](https://github.com/visionmedia/node-jscoverage) to build test cases coverage for `node-shark`.
+
+Larger than **95%** code is covered by test cases. Get details from [this](http://aleafs.github.com/node-shark/coverage.html).
+
 # Contributors #
 ```
  project: shark
