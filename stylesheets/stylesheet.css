@@ -366,8 +366,18 @@ Full-Width Styles
   border-bottom: 1px solid #111;
 }
 
+#main_banner {
+  margin: 0 auto;
+}
+
+#main_banner img {
+  border: 0;
+  padding: 0;
+}
+
 #main_content {
-  padding-top: 40px;
+  padding-top: 0;
+  margin-top: -20px;
 }
 
 #footer_wrap {
