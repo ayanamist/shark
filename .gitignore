@@ -3,6 +3,7 @@ log
 .etc
 run
 *.properties
+*.log
 test/unit/etc
 test/unit/log
 test/unit/tmp
