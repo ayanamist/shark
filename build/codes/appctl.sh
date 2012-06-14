@@ -102,7 +102,7 @@ stop() {
         done
     fi
 
-    if [ -f "${PIDFILE}" ] ; then
+    if [ -f "${PIDFILE}" -a "${pid}"="`cat ${PIDFILE}`" ] ; then
         /bin/rm -f "${PIDFILE}" &> /dev/null
     fi
 
