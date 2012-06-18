@@ -61,10 +61,12 @@ describe('build library', function() {
       'test.c5' : the,
     });
 
-    var _me = Build.init('etc/build/test1.properties', __dirname);
+    var _me = Build.init('etc/build/test1.properties', __dirname, {
+      'test.c2' : 'force value'
+    });
     _me.property().should.eql({
       'test.c1' : '123dsf=4 5有效',
-      'test.c2' : '"replace last data"',
+      'test.c2' : 'force value',
       'test.c3' : the + '',
       'test.c4' : '##i.will.not.be.found##',
       'test.c5' : the + '',
