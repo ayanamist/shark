@@ -1,19 +1,21 @@
 
 JSCOVERAGE="./build/bin/jscoverage"
 
-init:
-	npm install
-	node ./build/makeconf.js
+test:
+	@npm install
+	@node ./build/makeconf.js
+	@./node_modules/mocha/bin/mocha --reporter spec --timeout 5000 test/unit/*.js
 
-test: init
-	./node_modules/mocha/bin/mocha --reporter spec --timeout 5000 test/unit/*.js
-
-func: init
+func:
+	@npm install
+	@node ./build/makeconf.js
 	@./bin/appctl restart
 	-./node_modules/mocha/bin/mocha --reporter spec --timeout 10000 test/func/*.js
 	@./bin/appctl stop
 
-cov: clean init
+cov:
+	@npm install
+	@node ./build/makeconf.js
 	@/bin/bash ./build/jscoverage.sh
 	-mv lib lib.bak && $(JSCOVERAGE) lib.bak lib 
 	-./node_modules/mocha/bin/mocha --reporter html-cov --timeout 5000 --ignore-leaks test/unit/*.js > ./build/coverage.html

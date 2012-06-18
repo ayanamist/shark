@@ -4,6 +4,8 @@ var os = require('os'), path = require('path');
 
 var Builder = require(__dirname + '/../lib/build.js');
 
+var Home    = __dirname + '/../';
+
 /**
  * @强制参数 
  */
@@ -32,12 +34,11 @@ process.argv.slice(2).forEach(function (arg) {
 });
 /* }}} */
 
-var _props  = path.normalize(__dirname + '/../default-' + os.hostname() + '-' + os.arch() + '.properties');
-if (!path.existsSync(_props)) {
-  var _me = Builder.init();
-  _me.makeconf('build/tpl/default.properties', _props, {
-    'dir.root'      : path.normalize(__dirname + '/../'),
-    'log.root'      : path.normalize(__dirname + '/../log/'),
+var _props  = path.normalize(Home + 'default-' + os.hostname() + '-' + os.arch() + '.properties');
+if (!path.existsSync(_props) || 1) {
+  Builder.init(null, Home, {
+    'dir.root'      : Home,
+    'log.root'      : Home + 'log/',
 
     'mysql.default.host'        : '127.0.0.1,localhost',
     'mysql.default.port'        : 3306,
@@ -49,46 +50,51 @@ if (!path.existsSync(_props)) {
      * @redis配置
      */
     'redis.default.host'        : '127.0.0.1:6379,localhost:6379',
-  });
+
+  }).makeconf('build/tpl/default.properties', _props);
 }
 
-var _me = Builder.init(_props, __dirname + '/../');
-var $   = function (key) {
-  return _force[key] || _me.$(key);
+var _me = Builder.init(_props, Home, _force);
+
+/* {{{ task_make_test() */
+var task_make_test = function () {
+  _me.makedir('test/unit/etc');
+  _me.makedir('test/unit/tmp');
+
+  _me.makeconf('build/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
+  _me.makeconf('build/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
+  _me.makeconf('build/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
+
+  _me.makeconf('build/test/mysql.ini',    'test/unit/etc/mysql_test.ini', {
+    'mysql.default.pass'      : _me.$('mysql.default.password'),
+  });
+  _me.makeconf('build/test/redis.ini',    'test/unit/etc/redis.ini');
 };
 
-_me.makedir('test/unit/etc');
-_me.makedir('test/unit/tmp');
+/* }}} */
 
-_me.makeconf('build/test/test_config_file.ini',   'test/unit/etc/test_config_file.ini');
-_me.makeconf('build/test/test_config_file.js',    'test/unit/etc/test_config_file.js');
-_me.makeconf('build/test/test_config_file.json',  'test/unit/etc/test_config_file.json');
+/* {{{ task_make_bin() */
 
-_me.makeconf('build/test/mysql.ini',    'test/unit/etc/mysql_test.ini', {
-  'mysql.default.host'      : $('mysql.default.host'),
-  'mysql.default.port'      : $('mysql.default.port'),
-  'mysql.default.user'      : $('mysql.default.user'),
-  'mysql.default.pass'      : $('mysql.default.password'),
-});
-_me.makeconf('build/test/redis.ini',    'test/unit/etc/redis.ini', {
-  'redis.default.host'      : $('redis.default.host'),
-});
+var task_make_bin = function () {
+  _me.makedir('bin');
+  _me.makedir(_me.$('log.root'));
+  _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
+    'app.name'        : 'shark',
+    'nodejs.bin'      : '/usr/local/bin/node',
+  });
+  Builder.setmode('bin/appctl', 0755);
 
-_me.makedir('bin');
-_me.makedir(_me.$('log.root'));
-_me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
-  'app.name'        : 'shark',
-  'nodejs.bin'      : '/usr/local/bin/node',
-  'log.root'        : $('log.root'),
-});
-Builder.setmode('bin/appctl', 0755);
+  _me.makeconf('build/codes/shark.js',    'bin/shark.js', {
+    'app.name'        : 'shark',
+    'nodejs.bin'      : '/usr/local/bin/node',
+  });
+  Builder.setmode('bin/shark.js', 0755);
 
-_me.makeconf('build/codes/shark.js',    'bin/shark.js', {
-  'app.name'        : 'shark',
-  'nodejs.bin'      : '/usr/local/bin/node',
-});
-Builder.setmode('bin/shark.js', 0755);
+  _me.makeconf('build/codes/logrotate.sh',   'bin/logrotate');
+  Builder.setmode('bin/logrotate', 0755);
+};
+/* }}} */
 
-_me.makeconf('build/codes/logrotate.sh',   'bin/logrotate');
-Builder.setmode('bin/logrotate', 0755);
+task_make_test();
+task_make_bin();
 
