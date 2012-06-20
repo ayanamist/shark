@@ -84,6 +84,7 @@ describe('build library', function() {
       'test.c4' : 'i.am.found',
       'test.c5' : the + '',
     });
+    _me.$('i am not defined', 'hello W').should.eql('hello W');
   });
   /* }}} */
 

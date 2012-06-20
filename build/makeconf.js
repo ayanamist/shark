@@ -80,13 +80,13 @@ var task_make_bin = function () {
   _me.makedir(_me.$('log.root'));
   _me.makeconf('build/codes/appctl.sh',   'bin/appctl', {
     'app.name'        : 'shark',
-    'nodejs.bin'      : '/usr/local/bin/node',
+    'nodejs.bin'      : _me.$('nodejs.bin', '/usr/local/bin/node'),
   });
   Builder.setmode('bin/appctl', 0755);
 
   _me.makeconf('build/codes/shark.js',    'bin/shark.js', {
     'app.name'        : 'shark',
-    'nodejs.bin'      : '/usr/local/bin/node',
+    'nodejs.bin'      : _me.$('nodejs.bin', '/usr/local/bin/node'),
   });
   Builder.setmode('bin/shark.js', 0755);
 
