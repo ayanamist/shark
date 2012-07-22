@@ -1,10 +1,10 @@
 {
-  "name": "node-shark",
-  "version": "0.2.0",
+  "name": "shark",
+  "version": "0.1.0",
   "author": "Aleafs Zhang (zhangxc83@gmail.com)",
   "contributors": [
   ],
-  "homepage": "git@github.com:aleafs/node-shark.git",
+  "homepage": "git@github.com:aleafs/shark.git",
   "description": "A new develop framework for Node.js",
   "keywords": [ "shark", "Node.js", "framework" ],
   "dependencies": {
