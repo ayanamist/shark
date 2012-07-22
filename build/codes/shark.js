@@ -38,7 +38,7 @@ Builder.fileset(confdir, function(fname) {
 /* }}} */
 
 var config  = require(Home + 'lib/config.js').create(Home + '.etc/master.ini');
-var master  = require('node-cluster').Master(config.get('master', {
+var master  = require('pm').createMaster(config.get('master', {
   'pidfile' : Home + 'run/##app.name##.pid',
 }));
 
