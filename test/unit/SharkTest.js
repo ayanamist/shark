@@ -5,8 +5,8 @@ var Shark   = require(__dirname + '/../../');
 
 describe('shark interface', function () {
 
-  it('should_shark_log_works_fine', function () {
-    ['build', 'cache', 'config', 'error', 'extend', 'log', 'pool'].forEach(function (prop) {
+  it('should_shark_interface_works_fine', function () {
+    ['build', 'cache', 'config', 'extend', 'log', 'pool'].forEach(function (prop) {
       Shark.should.have.property(prop);
     });
   });
