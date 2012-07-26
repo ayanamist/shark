@@ -302,7 +302,7 @@ describe('cache management', function() {
 
 describe('redis cache test', function() {
 
-  var Redis = require(__dirname + '/../../lib/cache/redis.js');
+  var Redis = require(__dirname + '/../../lib/redis.js');
 
   /* {{{ should_redis_set_get_delete_works_fine() */
   it('should_redis_set_get_delete_works_fine', function(done) {
