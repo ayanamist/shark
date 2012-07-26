@@ -51,7 +51,7 @@ if (!path.existsSync(_props) || 1) {
      */
     'redis.default.host'        : '127.0.0.1:6379,localhost:6379',
 
-  }).makeconf('build/tpl/default.properties', _props);
+  }).makeconf('resource/tpl/default.properties', _props);
 }
 
 var _me = Builder.init(_props, Home, _force);
