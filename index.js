@@ -11,7 +11,7 @@ require('fs').readdirSync(__dirname + '/lib').forEach(function (item) {
   }
 });
 
-Shark.compile = function (options) {
+Shark.run = function (options) {
 
   /**
    * @ 项目根路径
@@ -39,6 +39,8 @@ Shark.compile = function (options) {
     throw new Error('Property file "' + _conf.propfile + '" not found.');
   }
 
+  /* {{{ compile */
+
   var build = Shark.build;
   var maker = build.init(_conf.propfile, _conf.home);
   [_conf.logpath, _conf.runpath, _conf.etcpath].forEach(function (item) {
@@ -55,6 +57,8 @@ Shark.compile = function (options) {
     maker.makedir(path.dirname(_file));
     maker.makeconf(fname, _file);
   });
+  /* }}} */
+
 };
 
 module.exports = Shark;
