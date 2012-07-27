@@ -9,15 +9,23 @@ declare -r __PWD__=$(pwd)
 declare -r APPROOT=$(cd -- $(dirname -- ${0}) && cd .. && pwd)
 declare -r APPNAME="##app.name##"
 
-declare -r PIDFILE="${APPROOT}/run/##app.name##.pid"
-declare -r NODEBIN="##nodejs.bin##"
+declare -r PIDFILE="##pid.file##"
+declare -r LOGROOT="##log.root##"
+declare -r FSTATUS="##status.taobao##"
+declare -r NODEBIN="/opt/taobao/install/node.js/bin/node"
 
 # {{{ function usage() #
 usage() {
-    echo "${0} {start [properties-file]|stop|reload|restart|status}"
+    echo "${0} {start [properties file]|stop|reload|restart|status}"
     exit 1;
 }
 # }}} #
+
+declare -r __ACTION="${1}"
+declare __PROPERTIES="##properties##"
+if [ ${#} -gt 1 ] ; then
+    __PROPERTIES=$(readlink -f -- "${2}")
+fi
 
 # {{{ function getpid() #
 getpid() {
@@ -47,22 +55,31 @@ still() {
 # {{{ function start() #
 start() {
     local pid=$(getpid)
+
     if [ ${pid} -gt 0 ] ; then
         echo "${APPNAME} is already running (PID=${pid})"
         return
     fi
 
-    if [ ! -f "${1}" ] ; then
-        echo "properities file (${1}) not found."
-        return
+    if [ ! -f "${__PROPERTIES}" ] ; then
+        echo "Properties file (${__PROPERTIES}) not found."
+        exit 2
     fi
 
+    for dir in $(dirname -- "${PIDFILE}") $(dirname -- "${FSTATUS}") ${LOGROOT} ; do
+        /bin/mkdir -p ${dir}
+    done
+
     echo -n "start ${APPNAME} ... "
-    nohup ${NODEBIN} ${APPROOT}/bin/shark.js ${1} &
+    ulimit -c unlimited
+    ${NODEBIN} ${APPROOT}/dispatch.js ${__PROPERTIES} >> "${LOGROOT}/itier.stdout" 2>&1 &
     for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then
             echo -n ", PID=${pid}"
+            if [ ! -z "${FSTATUS}" ] ; then
+                touch "${FSTATUS}"
+            fi
             echo_success
             echo
             return
@@ -83,7 +100,12 @@ stop() {
         return
     fi
 
-    echo -n "stop ${APPNAME} (PID=${pid}) ... "
+    echo -n "stop ${APPNAME} (PID=${pid}), please wait for 10s ... "
+    if [ -f "${FSTATUS}" ] ; then
+        /bin/rm -f "${FSTATUS}" &> /dev/null
+        sleep 10
+    fi
+
     kill -15 ${pid}
     for t in 1 1 2 3 3 ; do
         sleep ${t}
@@ -102,7 +124,7 @@ stop() {
         done
     fi
 
-    if [ -f "${PIDFILE}" -a "${pid}"="`cat ${PIDFILE}`" ] ; then
+    if [ -f "${PIDFILE}" -a ${pid}=`cat ${PIDFILE}` ] ; then
         /bin/rm -f "${PIDFILE}" &> /dev/null
     fi
 
@@ -154,15 +176,10 @@ status() {
 }
 # }}} #
 
-declare __PROPERTIES="${APPROOT}/${APPNAME}.properties"
-if [ ${#} -gt 1 ] ; then
-    __PROPERTIES=$(readlink -f -- "${2}")
-fi
-
 cd ${__PWD__}
-case "${1}" in
+case "${__ACTION}" in
     start)
-        start "${__PROPERTIES}";;  
+        start;;  
     stop)
         stop;;
     restart)
