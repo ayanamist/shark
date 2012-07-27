@@ -88,4 +88,13 @@ describe('build library', function() {
   });
   /* }}} */
 
+  /* {{{ should_makeconf_with_directory_works_fine() */
+  it('should_makeconf_with_directory_works_fine', function () {
+    var _me = Build.init('etc/build/test1.properties', __dirname, {
+      'test.c2' : 'force value'
+    });
+    _me.makeconf(__dirname + '/../../build/test', __dirname + '/tmp');
+  });
+  /* }}} */
+
 });
