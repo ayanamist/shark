@@ -13,8 +13,10 @@ Larger than **95%** code is covered by test cases. Click **[here](http://aleafs.
 # Contributors #
 ```
  project: shark
- commits: 111
- files  : 45
+ commits: 185
+ files  : 43
  authors: 
-   111  aleafs                  100.0%
+   185	aleafs                  100.0%
+
 ```
+
