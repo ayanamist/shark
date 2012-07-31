@@ -113,12 +113,34 @@ describe('object extends', function() {
       should.ok(!error);
       done();
     });
-    _me.wait('event1');
-    _me.wait('event2');
-    _me.emit('event3');
-    _me.emit('event4');
-    _me.emit('event1');
-    _me.emit('event2');
+    _me.wait('case1', function () {
+      var _evt1 = Extend.events(function () {
+        _me.emit('case1');
+      });
+
+      _evt1.wait('hello1');
+      _evt1.wait('hello2');
+      process.nextTick(function () {
+        _evt1.emit('hello4');
+        _evt1.emit('hello1');
+        _evt1.emit('hello1');
+        _evt1.emit('hello1');
+        _evt1.emit('hello2');
+      });
+    });
+    _me.wait('case2', function () {
+      var _evt2 = Extend.events(function (error) {
+        should.ok(error);
+        error.toString().should.include('test1');
+        _me.emit('case2');
+      });
+      _evt2.wait('hello3');
+      _evt2.wait('hello4');
+      process.nextTick(function () {
+        _evt2.emit('hello3', new Error('test1'));
+        _evt2.emit('hello4', new Error('test2'));
+      });
+    });
   });
   /* }}} */
 
