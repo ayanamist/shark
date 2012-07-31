@@ -9,7 +9,7 @@ var Home    = __dirname + '/../';
 /**
  * @强制参数 
  */
-var _force  = {};
+var _force  = Builder.parseProperties(Home + '/_private.properties');
 
 /* {{{ process argv parse */
 
@@ -24,11 +24,11 @@ process.argv.slice(2).forEach(function (arg) {
       break;
 
     case 1:
-      _force[pattern[0]]    = true;
+      _force[pattern[0]] = true;
       break;
 
     default:
-      _force[pattern[0]]    = pattern[1];
+      _force[pattern[0]] = pattern[1];
       break;
   }
 });
