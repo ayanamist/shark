@@ -1,0 +1,5 @@
+*.properties
+node_modules
+bin
+build
+test
