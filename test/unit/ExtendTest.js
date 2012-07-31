@@ -141,6 +141,18 @@ describe('object extends', function() {
         _evt2.emit('hello4', new Error('test2'));
       });
     });
+    _me.wait('case3', function () {
+      var _evt3 = Extend.events(function (error) {
+        error.should.eql('should be emitted');
+        _me.emit('case3');
+      });
+      _evt3.wait('hello5', function () {
+        _evt3.emit('hello5');
+      });
+      _evt3.wait('hello6', function () {
+        _evt3.emit('hello6', 'should be emitted');
+      });
+    });
   });
   /* }}} */
 
