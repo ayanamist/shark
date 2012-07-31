@@ -1,5 +1,4 @@
-
-JSCOVERAGE="./build/bin/jscoverage"
+JSCOVERAGE="./node_modules/visionmedia-jscoverage/jscoverage"
 
 test:
 	@npm install
@@ -16,7 +15,6 @@ func:
 cov:
 	@npm install
 	@node ./build/makeconf.js
-	@/bin/bash ./build/jscoverage.sh
 	-mv lib lib.bak && $(JSCOVERAGE) lib.bak lib 
 	-./node_modules/mocha/bin/mocha --reporter html-cov --timeout 5000 --ignore-leaks test/unit/*.js > ./build/coverage.html
 	-rm -rf lib && mv lib.bak lib

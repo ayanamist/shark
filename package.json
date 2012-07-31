@@ -1,26 +1,27 @@
 {
   "name": "shark",
-  "version": "0.3.1",
-  "author": "Aleafs Zhang (zhangxc83@gmail.com)",
-  "contributors": [
-  ],
-  "homepage": "git@github.com:aleafs/shark.git",
-  "description": "A new develop framework for Node.js",
-  "keywords": [ "shark", "Node.js", "framework" ],
-  "dependencies": {
-    "mysql-libmysqlclient"  : "=1.3.2",
-    "hiredis"               : "=0.1.14",
-    "redis"                 : "=0.7.1"
-  },
-  "engines": {
-    "node": ">=0.6.9"
-  },
-  "devDependencies": {
-    "should"    : ">=0.4.2",
-    "mocha"     : ">=0.9.0"
-  },
-  "main": "./index.js",
-  "scripts": {
-    "test": "make test"
-  }
+    "version": "0.3.1",
+    "author": "Aleafs Zhang (zhangxc83@gmail.com)",
+    "contributors": [
+      ],
+    "homepage": "git@github.com:aleafs/shark.git",
+    "description": "A new develop framework for Node.js",
+    "keywords": [ "shark", "Node.js", "framework" ],
+    "dependencies": {
+      "mysql-libmysqlclient"  : "=1.3.2",
+      "hiredis"               : "=0.1.14",
+      "redis"                 : "=0.7.1"
+    },
+    "engines": {
+      "node": ">=0.6.9"
+    },
+    "devDependencies": {
+      "should"    : ">=0.4.2",
+      "mocha"     : ">=0.9.0",
+      "visionmedia-jscoverage" : ">=1.0.0"
+    },
+    "main": "./index.js",
+    "scripts": {
+      "test": "make test"
+    }
 }
