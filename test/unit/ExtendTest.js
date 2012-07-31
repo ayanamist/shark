@@ -107,4 +107,19 @@ describe('object extends', function() {
   });
   /* }}} */
 
+  /* {{{ should_events_proxy_works_fine() */
+  it('should_events_proxy_works_fine', function (done) {
+    var _me = Extend.events(function (error) {
+      should.ok(!error);
+      done();
+    });
+    _me.wait('event1');
+    _me.wait('event2');
+    _me.emit('event3');
+    _me.emit('event4');
+    _me.emit('event1');
+    _me.emit('event2');
+  });
+  /* }}} */
+
 });
