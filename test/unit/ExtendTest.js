@@ -120,11 +120,13 @@ describe('object extends', function() {
 
       _evt1.wait('hello1');
       _evt1.wait('hello2');
-      _evt1.emit('hello4');
-      _evt1.emit('hello1');
-      _evt1.emit('hello1');
-      _evt1.emit('hello1');
-      _evt1.emit('hello2');
+      process.nextTick(function () {
+        _evt1.emit('hello4');
+        _evt1.emit('hello1');
+        _evt1.emit('hello1');
+        _evt1.emit('hello1');
+        _evt1.emit('hello2');
+      });
     });
     _me.wait('case2', function () {
       var _evt2 = Extend.events(function (error) {
