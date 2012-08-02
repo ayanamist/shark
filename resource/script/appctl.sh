@@ -11,8 +11,8 @@ declare -r APPNAME="##app.name##"
 
 declare -r PIDFILE="##pid.file##"
 declare -r LOGROOT="##log.root##"
-declare -r FSTATUS="##status.taobao##"
-declare -r NODEBIN="/opt/taobao/install/node.js/bin/node"
+declare -r FSTATUS="##200.file##"
+declare -r NODEBIN="##node.bin##"
 
 # {{{ function usage() #
 usage() {
@@ -72,7 +72,7 @@ start() {
 
     echo -n "start ${APPNAME} ... "
     ulimit -c unlimited
-    ${NODEBIN} ${APPROOT}/dispatch.js ${__PROPERTIES} >> "${LOGROOT}/itier.stdout" 2>&1 &
+    ${NODEBIN} ${APPROOT}/dispatch.js ${__PROPERTIES} >> "${LOGROOT}/##app.name##.stdout" 2>&1 &
     for _time in 1 1 2 3 3 ; do
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then
