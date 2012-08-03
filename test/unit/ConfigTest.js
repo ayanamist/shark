@@ -54,14 +54,20 @@ describe('file config', function() {
       'key4'    : -213,
       'sec1'    : {
         'key1'  : 'a=b"c',
-        'key2'  : '1',
+      'key2'  : '1',
       },
       'sec1:default'    : {
         'key1'  : 'aa',
-        'key3'  : 'bb',
+      'key3'  : 'bb',
       },
       'iplist'  : {
         '127.0.0.1' : 30,
+      },
+    });
+    cfg.find('sec1').should.eql({
+      'default' : {
+        'key1'  : 'aa',
+      'key3'  : 'bb',
       },
     });
   });
