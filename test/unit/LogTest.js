@@ -97,6 +97,31 @@ describe('file log', function() {
     _log.should.have.property('warn');
     _log.should.have.property('error');
     _log.should.have.property('close');
+    _log.should.have.property('exception');
+  });
+  /* }}} */
+
+  /* {{{ should_exception_log_works_fine() */
+  it('should_exception_log_works_fine', function (done) {
+    var _fn = __dirname + '/tmp/test.log';
+    try {
+      fs.unlinkSync(_fn);
+    } catch (e) {}
+
+    var _me = Log.create({'file' : _fn, 'level' : Log.WARN});
+    _me.exception({'a' : 'I will not be loged'});
+
+    var err = new Error('hello');
+    _me.exception(err, {'key1' : 'value1', 'key2' : ['value2\naa']});
+    _me.close();
+
+    setTimeout(function() {
+      var _text = fs.readFileSync(_fn, 'utf8');
+      _text.should.not.include('I will not be loged');
+      _text.should.include(err.stack);
+      _text.should.include('key2: ["value2\\naa"]');
+      done();
+    }, 100);
   });
   /* }}} */
 
