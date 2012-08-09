@@ -100,12 +100,14 @@ stop() {
         return
     fi
 
-    echo -n "stop ${APPNAME} (PID=${pid}), please wait for 10s ... "
+    echo -n "stop ${APPNAME} (PID=${pid})"
     if [ -f "${FSTATUS}" ] ; then
+        echo -n ", please wait for 10s"
         /bin/rm -f "${FSTATUS}" &> /dev/null
         sleep 10
     fi
 
+    echo -n " ..."
     kill -15 ${pid}
     for t in 1 1 2 3 3 ; do
         sleep ${t}
@@ -124,7 +126,7 @@ stop() {
         done
     fi
 
-    if [ -f "${PIDFILE}" -a ${pid}=`cat ${PIDFILE}` ] ; then
+    if [[ -f "${PIDFILE}" ]] && [[ ${pid}=`cat ${PIDFILE} 2>/dev/null` ]] ; then
         /bin/rm -f "${PIDFILE}" &> /dev/null
     fi
 
