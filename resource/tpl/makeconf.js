@@ -53,7 +53,6 @@ if (!path.existsSync(_props) || 1) {
      */
     'dir.root'      : Home,
     'log.root'      : path.normalize(Home + '/log'),
-    'log.expire'    : 0,
 
   }, _force)).makeconf('resource/tpl/default.properties', _props);
 }
@@ -86,7 +85,8 @@ var task_make_bin = function () {
   Builder.setmode('bin/' + __APPNAME__, 0755);
 
   _me.makeconf('node_modules/shark/resource/script/logrotate.sh', 'bin/logrotate', {
-    'app.name'  : __APPNAME__,
+    'app.name'      : __APPNAME__,
+    'log.expire'    : _me.$('log.expire', 0),
   });
   Builder.setmode('bin/logrotate', 0755);
 };
