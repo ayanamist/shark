@@ -51,9 +51,9 @@ if (!path.existsSync(_props) || 1) {
     /**
      * @Add default properties here
      */
-
-    'dir.root' : Home,
-    'log.root' : path.normalize(Home + '/log'),
+    'dir.root'      : Home,
+    'log.root'      : path.normalize(Home + '/log'),
+    'log.expire'    : 0,
 
   }, _force)).makeconf('resource/tpl/default.properties', _props);
 }
