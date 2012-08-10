@@ -1,10 +1,10 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 
 var os = require('os'), path = require('path');
-
 var Builder = require('shark').build;
-
 var Home    = __dirname + '/..';
+
+var __APPNAME__ = 'shark';
 
 /**
  * @强制参数 
@@ -76,16 +76,18 @@ var task_make_test = function () {
 var task_make_bin = function () {
   _me.makedir('bin');
   _me.makedir(_me.$('log.root'));
-  _me.makeconf('node_modules/shark/resource/script/appctl.sh',   'bin/appctl', {
-    'app.name'      : 'iservice',
-    'pid.file'      : _me.$('pid.file', Home + '/run/iservice.pid'),
-    '200.file'      : _me.$('200.file', ''),
-    'properties'    : _me.$('propfile', _props),
-    'node.bin'      : _me.$('node.bin', '/opt/taobao/install/node.js/bin/node'),
+  _me.makeconf('node_modules/shark/resource/script/appctl.sh',   'bin/' + __APPNAME__, {
+    'app.name'  : __APPNAME__,
+    'pid.file'  : _me.$('pid.file', Home + '/run/' + __APPNAME__ + '.pid'),
+    '200.file'  : _me.$('200.file', ''),
+    'properties': _me.$('propfile', _props),
+    'node.bin'  : _me.$('node.bin', process.execPath),
   });
-  Builder.setmode('bin/appctl', 0755);
+  Builder.setmode('bin/' + __APPNAME__, 0755);
 
-  _me.makeconf('node_modules/shark/resource/script/logrotate.sh',   'bin/logrotate');
+  _me.makeconf('node_modules/shark/resource/script/logrotate.sh', 'bin/logrotate', {
+    'app.name'  : __APPNAME__,
+  });
   Builder.setmode('bin/logrotate', 0755);
 };
 /* }}} */

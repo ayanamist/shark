@@ -49,7 +49,7 @@ for _file in $(find -- "${LOGROOT}" -maxdepth 1 -type f -name "*.log") ; do
     mv -f "${_file}" "${LOGROOT}/${LOGDATE}/"
 done
 
-cd "${APPROOT}" && ./bin/appctl reload && cd "${LOGROOT}/${LOGDATE}"
+cd "${APPROOT}" && ./bin/##app.name## reload && cd "${LOGROOT}/${LOGDATE}"
 if [ ${?} -ne 0 ] ; then
     exit 4
 fi
