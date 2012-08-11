@@ -1,10 +1,11 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 
 var should  = require('should');
+var Config  = require(__dirname + '/../../lib/config.js');
+var Redis   = require(__dirname + '/../../lib/redis.js');
 
 describe('redis cache test', function() {
 
-  var Redis = require(__dirname + '/../../lib/redis.js');
 
   /* {{{ should_redis_set_get_delete_works_fine() */
   it('should_redis_set_get_delete_works_fine', function(done) {
@@ -60,7 +61,7 @@ describe('redis cache test', function() {
   /* }}} */
 
   /* {{{ should_redis_set_binary_works_fine() */
-  it('should_redis_set_binary_works_fine', function(done) {
+  xit('should_redis_set_binary_works_fine', function(done) {
     var _conf   = Config.create(__dirname + '/etc/redis.ini');
     var _cache  = Redis.create(_conf.get('servers'), _conf.get('options'));
 
@@ -76,7 +77,7 @@ describe('redis cache test', function() {
   /* }}} */
 
   /* {{{ should_multibyte_data_works_fine() */
-  it('should_multibyte_data_works_fine', function(done) {
+  xit('should_multibyte_data_works_fine', function(done) {
     var _conf   = Config.create(__dirname + '/etc/redis.ini');
     var _cache  = Redis.create(_conf.get('servers'), _conf.get('options'));
     var message = '';
