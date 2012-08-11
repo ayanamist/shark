@@ -61,7 +61,7 @@ describe('redis cache test', function() {
   /* }}} */
 
   /* {{{ should_redis_set_binary_works_fine() */
-  xit('should_redis_set_binary_works_fine', function(done) {
+  it('should_redis_set_binary_works_fine', function(done) {
     var _conf   = Config.create(__dirname + '/etc/redis.ini');
     var _cache  = Redis.create(_conf.get('servers'), _conf.get('options'));
 
@@ -77,7 +77,7 @@ describe('redis cache test', function() {
   /* }}} */
 
   /* {{{ should_multibyte_data_works_fine() */
-  xit('should_multibyte_data_works_fine', function(done) {
+  it('should_multibyte_data_works_fine', function(done) {
     var _conf   = Config.create(__dirname + '/etc/redis.ini');
     var _cache  = Redis.create(_conf.get('servers'), _conf.get('options'));
     var message = '';
