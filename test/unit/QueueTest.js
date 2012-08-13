@@ -2,7 +2,7 @@
 
 var should  = require('should');
 var Events  = require(__dirname + '/../../lib/events.js');
-var Queque	= require(__dirname + '/../../lib/queue.js');
+var Queque  = require(__dirname + '/../../lib/queue.js');
 
 describe('simple queue', function () {
 
@@ -70,29 +70,29 @@ describe('simple queue', function () {
 
 });
 
-xdescribe('priority queque', function() {
+describe('priority queque', function() {
 
-  /* {{{ should_queque_push_and_fetch_works_fine() */
-  it('should_queque_push_and_fetch_works_fine', function() {
-    var queque	= Queque.create({'o' : '暂时都没啥用'});
-    queque.size().should.eql(0);
-    should.ok(!queque.fetch());
+  /* {{{ should_queque_push_and_shift_works_fine() */
+  it('should_queque_push_and_shift_works_fine', function() {
+    var _me = Queque.createPriorityQueue();
+    _me.size().should.eql(0);
+    should.ok(!_me.shift());
 
-    queque.push('a', 1);
-    queque.size().should.eql(1);
-    queque.push('b', 0);
-    queque.push('c', 10);
-    queque.push('d', -1);
-    queque.size().should.eql(4);
-    queque.size(0).should.eql(2);
+    _me.push('a', 1);
+    _me.size().should.eql(1);
+    _me.push('b', 0);
+    _me.push('c', 10);
+    _me.push('d', -1);
+    _me.size().should.eql(4);
+    _me.size(0).should.eql(2);
 
-    queque.fetch().should.eql('b');
-    queque.fetch().should.eql('d');
-    queque.fetch().should.eql('a');
-    queque.fetch().should.eql('c');
-    should.ok(!queque.fetch());
+    _me.shift().should.eql('b');
+    _me.shift().should.eql('d');
+    _me.shift().should.eql('a');
+    _me.shift().should.eql('c');
+    should.ok(!_me.shift());
 
-    queque.size().should.eql(0);
+    _me.size().should.eql(0);
   });
   /* }}} */
 
