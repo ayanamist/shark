@@ -101,12 +101,18 @@ describe('redis cache test', function() {
 
     var _fake   = require('netblackhole').create(10241);
     var _conf   = Config.create(__dirname + '/etc/redis.ini');
-    var redis   = Redis.create(_conf.get('servers') + ',localhost:10241', _conf.get('options'));
+    var redis   = Redis.create(_conf.get('servers') + ',localhost:10241', {
+      'connect_timeout' : 10,
+    });
 
     redis.set('key1', 'val1', function (error, result) {
       should.ok(!error);
-      _fake.close();
-      done();
+      setTimeout(function () {
+        var msg = _fake.msgs().pop();
+        msg.should.have.property('evt', 'data');
+        _fake.close();
+        done();
+      }, 20);
     });
   });
   /* }}} */
