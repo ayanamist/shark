@@ -6,7 +6,6 @@ var Redis   = require(__dirname + '/../../lib/redis.js');
 
 describe('redis cache test', function() {
 
-
   /* {{{ should_redis_set_get_delete_works_fine() */
   it('should_redis_set_get_delete_works_fine', function(done) {
     var _conf   = Config.create(__dirname + '/etc/redis.ini');
@@ -93,6 +92,21 @@ describe('redis cache test', function() {
         result.should.eql(message);
         done();
       });
+    });
+  });
+  /* }}} */
+
+  /* {{{ should_redis_works_fine_when_servers_not_works() */
+  it('should_redis_works_fine_when_servers_not_works', function (done) {
+
+    var _fake   = require('netblackhole').create(10241);
+    var _conf   = Config.create(__dirname + '/etc/redis.ini');
+    var redis   = Redis.create(_conf.get('servers') + ',localhost:10241', _conf.get('options'));
+
+    redis.set('key1', 'val1', function (error, result) {
+      should.ok(!error);
+      _fake.close();
+      done();
     });
   });
   /* }}} */
