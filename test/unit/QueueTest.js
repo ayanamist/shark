@@ -29,4 +29,35 @@ describe('priority queque', function() {
 	});
 	/* }}} */
 
+  /* {{{ should_queue_timeout_works_fine() */
+  it('should_queue_timeout_works_fine', function (done) {
+    var evt = require(__dirname + '/../../lib/events.js').create(function () {
+      done();
+    });
+
+    var _me = Queque.create({
+      'timeout' : 4,
+    });
+
+    evt.wait('fetched', function () {
+      _me.push(function (error) {
+        should.ok(!error);
+      });
+      process.nextTick(function () {
+        _me.fetch();
+        evt.emit('fetched');
+      });
+    });
+
+    evt.wait('timeout', function () {
+      _me.push(function (error) {
+        error.should.have.property('name', 'QueuedTimeout');
+        should.ok(!_me.fetch());
+        evt.emit('timeout');
+      });
+    });
+
+  });
+  /* }}} */
+
 });
