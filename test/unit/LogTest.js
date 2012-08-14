@@ -125,4 +125,27 @@ describe('file log', function() {
   });
   /* }}} */
 
+  /* {{{ should_log_flush_to_file_when_process_exit() */
+  it('should_log_flush_to_file_when_process_exit', function (done) {
+    var _fn = __dirname + '/tmp/test.log';
+    try {
+      fs.unlinkSync(_fn);
+    } catch (e) {}
+
+    var _me = Log.create({
+      'file'  : _fn, 'buffer' : 1024,
+    });
+
+    _me.notice('HELLO', 'world1');
+    _me.notice('HELLO', 'world2');
+    process.emit('exit');
+
+    fs.readFile(_fn, 'utf8', function (error, data) {
+      data.should.include("\tHELLO\t\"world1\"");
+      data.should.include("\tHELLO\t\"world2\"");
+      done();
+    });
+  });
+  /* }}} */
+
 });
