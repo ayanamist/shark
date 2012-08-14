@@ -8,7 +8,7 @@
 
 We use [node-jscoverage](https://github.com/visionmedia/node-jscoverage) to build test cases coverage for `shark`.
 
-Larger than **96%** code is covered by test cases. Click **[here](http://aleafs.github.com/shark/coverage.html)** to get details.
+Larger than **96%** code is covered by test cases. Click **[here](http://aleafs.github.com/coverage/shark.html)** to get details.
 
 # Contributors #
 ```
