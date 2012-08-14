@@ -19,7 +19,7 @@
       "should"          : ">=0.4.2",
       "mocha"           : ">=0.9.0",
       "netblackhole"    : ">=0.0.2",
-      "visionmedia-jscoverage": "*"
+      "visionmedia-jscoverage" : ">=1.0.0"
     },
     "main": "./index.js",
     "scripts": {
