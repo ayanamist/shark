@@ -1,4 +1,4 @@
-JSCOVERAGE="jscoverage"
+JSCOVERAGE="./node_modules/visionmedia-jscoverage/jscoverage"
 
 test:
 	@npm install
