@@ -97,7 +97,6 @@ describe('file log', function() {
     _log.should.have.property('warn');
     _log.should.have.property('error');
     _log.should.have.property('close');
-    _log.should.have.property('exception');
   });
   /* }}} */
 
@@ -108,13 +107,13 @@ describe('file log', function() {
       fs.unlinkSync(_fn);
     } catch (e) {}
 
-    var _me = Log.create({'file' : _fn, 'level' : Log.WARN});
-    _me.exception({'a' : 'I will not be loged'});
+    Log.setExceptionLogger({'file' : _fn, 'level' : Log.WARN});
+    Log.exception({'a' : 'I will not be loged'});
 
     var err = new Error('hello');
-    _me.exception(err, {'key1' : 'value1', 'key2' : ['value2\naa']});
-    _me.close();
+    Log.exception(err, {'key1' : 'value1', 'key2' : ['value2\naa']});
 
+    process.emit('exit');
     setTimeout(function() {
       var _text = fs.readFileSync(_fn, 'utf8');
       _text.should.not.include('I will not be loged');
