@@ -70,6 +70,7 @@ describe('file config', function() {
       'key3'  : 'bb',
       },
     });
+    cfg.find('').should.eql({});
   });
   /* }}} */
 
