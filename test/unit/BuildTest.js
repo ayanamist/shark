@@ -97,4 +97,19 @@ describe('build library', function() {
   });
   /* }}} */
 
+  /* {{{ should_makedir_works_fine() */
+  it('should_makedir_works_fine', function () {
+    var dir = __dirname + '/tmp/a/b/' + process.pid;
+    try {
+      require('child_process').exec('rm -rf "' + dir + '"');
+    } catch (e) {}
+
+    var _me = Build.init('etc/build/test1.properties', __dirname, {
+      'test.c2' : 'force value'
+    });
+    _me.makedir(dir);
+    fs.statSync(dir).isDirectory().should.eql(true);
+  });
+  /* }}} */
+
 });
