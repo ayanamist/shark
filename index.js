@@ -11,4 +11,5 @@ require('fs').readdirSync(__dirname + '/lib').forEach(function (item) {
   }
 });
 
+Shark.setExceptionLogger = Shark.log.setExceptionLogger;
 module.exports = Shark;
