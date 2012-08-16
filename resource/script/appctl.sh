@@ -74,18 +74,18 @@ start() {
     ulimit -c unlimited
     ${NODEBIN} ${APPROOT}/dispatch.js ${__PROPERTIES} >> "${LOGROOT}/##app.name##.stdout" 2>&1 &
     for _time in 1 1 2 3 3 ; do
+        sleep ${_time}
+
         pid=$(getpid)
         if [ ${pid} -gt 0 ] ; then
             echo -n ", PID=${pid}"
             if [ ! -z "${FSTATUS}" ] ; then
-                touch "${FSTATUS}"
+                sleep 1 && touch "${FSTATUS}"
             fi
             echo_success
             echo
             return
         fi
-
-        sleep ${_time}
     done
     echo_failure
     echo
