@@ -2,16 +2,19 @@
 
 "use strict";
 
-var Shark = {};
+exports.version = '0.3.16';
 
 require('fs').readdirSync(__dirname + '/lib').forEach(function (item) {
   var m = item.match(/(.+?)\.js$/);
-  if (m && m[1]) {
-    Shark[m[1]] = require(__dirname + '/lib/' + m[0]);
+  if (!m || !m[1]) {
+    return;
   }
+
+  exports.__defineGetter__(m[1], function () {
+    return require(__dirname + '/lib/' + m[0]);
+  });
 });
 
-Shark.setExceptionLogger = Shark.log.setExceptionLogger;
-Shark.logException = Shark.log.exception;
+exports.setExceptionLogger = require('./lib/log.js').setExceptionLogger;
+exports.logException = require('./lib/log.js').exception;
 
-module.exports = Shark;
