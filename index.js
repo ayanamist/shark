@@ -2,9 +2,15 @@
 
 "use strict";
 
-exports.version = '0.3.16';
+var fs = require('fs');
 
-require('fs').readdirSync(__dirname + '/lib').forEach(function (item) {
+try {
+  exports.version = JSON.parse(fs.readFileSync(__dirname + '/package.json', 'utf-8').trim()).version;
+} catch (e) {
+  exports.version = 'unknown';
+}
+
+fs.readdirSync(__dirname + '/lib').forEach(function (item) {
   var m = item.match(/(.+?)\.js$/);
   if (!m || !m[1]) {
     return;
