@@ -10,11 +10,9 @@ require('fs').readdirSync(__dirname + '/lib').forEach(function (item) {
     return;
   }
 
-  exports.__defineGetter__(m[1], function () {
-    return require(__dirname + '/lib/' + m[0]);
-  });
+  exports[m[1]] = require(__dirname + '/lib/' + m[0]);
 });
 
-exports.setExceptionLogger = require('./lib/log.js').setExceptionLogger;
-exports.logException = require('./lib/log.js').exception;
+exports.setExceptionLogger = exports.log.setExceptionLogger;
+exports.logException = exports.log.exception;
 
