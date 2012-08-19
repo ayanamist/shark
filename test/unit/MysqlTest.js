@@ -22,7 +22,7 @@ describe('mysql pool with libmysqlclient', function() {
   /* }}} */
 
   /* {{{ should_sleep_100ms_async_run_works_fine() */
-  xit('should_sleep_100ms_async_run_works_fine', function(done) {
+  it('should_sleep_100ms_async_run_works_fine', function(done) {
     var mysql   = Mysql.create(options);
     var total   = 5;
     var dones   = 0;
@@ -60,33 +60,34 @@ describe('mysql pool with libmysqlclient', function() {
 
   /* {{{ should_mysql_query_works_fine() */
   it('should_mysql_query_works_fine', function(done) {
+    options.dbname  = 'test';
     var _me = Mysql.create(options);
-    var sql = 'CREATE TABLE test.only_for_unittest (' + 
+    var sql = 'CREATE TABLE only_for_unittest (' + 
       'id int(10) unsigned not null auto_increment primary key,'+
-      'txt varchar(2) not null default \'\'' +
+      'txt varchar(2) not null default ""' +
       ')ENGINE=MYISAM';
 
-    _me.query('DROP TABLE IF EXISTS test.only_for_unittest', function(error, info) {
+    _me.query('DROP TABLE IF EXISTS only_for_unittest', function(error, info) {
       should.ok(!error);
       info.should.have.property('affectedRows', 0);
 
       _me.query(sql, function(error, info) {
         should.ok(!error);
-        _me.query('INSERT INTO test.only_for_unittest (txt) VALUES (\'test\')', function(error, info) {
+        _me.query('INSERT INTO only_for_unittest (txt) VALUES ("test")', function(error, info) {
           info.should.have.property('insertId', 1);
           info.should.have.property('affectedRows', 1);
-          done();
-          return;
-          _me.query('SELECT * FROM test.only_for_unittest', function(error, rows) {
+          _me.query('SELECT id,txt FROM test.only_for_unittest', function(error, rows) {
             rows.should.eql([{
               'id'  : 1,
               'txt' : 'te',
             }]);
-          });
-        });
+            done();
           });
         });
       });
-    /**/
+    });
+  });
+  /**/
 
 });
+
