@@ -102,12 +102,11 @@ stop() {
 
     echo -n "stop ${APPNAME} (PID=${pid})"
     if [ -f "${FSTATUS}" ] ; then
-        echo -n ", please wait for 10s"
+        echo -n ", please wait for 6s ... "
         /bin/rm -f "${FSTATUS}" &> /dev/null
-        sleep 10
+        sleep 6
     fi
 
-    echo -n " ..."
     kill -15 ${pid}
     for t in 1 1 2 3 3 ; do
         sleep ${t}
