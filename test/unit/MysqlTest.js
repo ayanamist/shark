@@ -9,7 +9,7 @@ var Mysql   = require(__dirname + '/../../lib/mysql.js');
  */
 var options = config.create(__dirname + '/etc/mysql_test.ini').all();
 
-describe('mysql pool with libmysqlclient', function () {
+describe('mysql with node-mysql', function () {
 
   /* {{{ should_mysql_with_4_conn_pool_works_fine() */
   it('should_mysql_with_4_conn_pool_works_fine', function (done) {
@@ -18,33 +18,6 @@ describe('mysql pool with libmysqlclient', function () {
       rows.should.eql([{'1':'1'}]);
       done();
     });
-  });
-  /* }}} */
-
-  /* {{{ should_sleep_100ms_async_run_works_fine() */
-  it('should_sleep_100ms_async_run_works_fine', function (done) {
-    var mysql   = Mysql.create(options);
-    var total   = 5;
-    var dones   = 0;
-    var times   = [];
-    for (var i = 0; i < total; i++) {
-      times[i]  = (new Date()).getTime();
-      (function () {
-        var c   = i;
-        mysql.query('SELECT ' + c + ' AS k,SLEEP(0.1)', function (error, rows, info) {
-          should.ok(!error);
-          rows.should.eql([{
-            'k'   : c + '',
-            'SLEEP(0.1)'    : '0',
-          }]);
-          times[c]  = (new Date()).getTime() - times[c];
-          times[c].should.be.below(150);
-          if ((++dones) >= total) {
-            done();
-          }
-        });
-      })();
-    }
   });
   /* }}} */
 
@@ -91,7 +64,7 @@ describe('mysql pool with libmysqlclient', function () {
       });
     });
   });
-  /**/
+  /* }}} */
 
 });
 

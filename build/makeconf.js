@@ -40,7 +40,7 @@ if (!path.existsSync(_props) || 1) {
     'dir.root'      : Home,
     'log.root'      : Home + '/log/',
 
-    'mysql.default.host'        : '127.0.0.1,localhost',
+    'mysql.default.host'        : '127.0.0.1',
     'mysql.default.port'        : 3306,
     'mysql.default.user'        : 'root',
     'mysql.default.password'    : '',
