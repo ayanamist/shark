@@ -1,9 +1,8 @@
 {
   "name": "shark",
-    "version": "0.3.17",
+    "version": "0.3.18",
     "author": "Aleafs Zhang (zhangxc83@gmail.com)",
-    "contributors": [
-      ],
+    "contributors": [],
     "homepage": "git@github.com:aleafs/shark.git",
     "description": "A new develop framework for Node.js",
     "keywords": [ "shark", "Node.js", "framework" ],
