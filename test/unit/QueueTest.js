@@ -68,6 +68,18 @@ describe('simple queue', function () {
   });
   /* }}} */
 
+  /* {{{ should_simple_queue_timeout_works_fine() */
+  it('should_timeout_delete_from_queue', function (done) {
+    var _me = Queque.create({
+      'timeout' : 4,
+    });
+    _me.push(1, function (error) {
+      should.ok(error);
+      _me.size().should.eql(0);
+      done();
+    });
+  });
+  /* }}} */
 });
 
 describe('priority queque', function() {
