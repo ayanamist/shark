@@ -68,3 +68,16 @@ describe('mysql with node-mysql', function () {
 
 });
 
+describe('mysql pool', function () {
+
+  var _pool = Mysql.createPool({
+    'poolsize' : 10,
+  });
+  _pool.addserver(options);
+
+  it ('should_connect_works_fine', function (done) {
+    done();
+  });
+
+});
+
