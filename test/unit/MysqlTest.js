@@ -47,7 +47,7 @@ describe('mysql with node-mysql', function () {
       _me.query(sql, function (error, info) {
         should.ok(!error);
         _me.query('INSERT INTO only_for_unittest (txt) VALUES ("test")', function (error, info) {
-          should.ok(!error);
+          console.log(error);
           info.should.have.property('insertId', 1);
           info.should.have.property('affectedRows', 1);
           _me.query('SELECT id,txt FROM test.only_for_unittest', function (error, rows) {
