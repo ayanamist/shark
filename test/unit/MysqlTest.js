@@ -16,11 +16,12 @@ describe('mysql with node-mysql', function () {
     var _me = Mysql.create(options);
     _me.on('ready', function (stat) {
       stat.should.eql(3);
-      _me.query('SELECT 1', function (error, rows) {
-        should.ok(!error);
-        rows.should.eql([{'1':'1'}]);
-        done();
-      });
+    });
+
+    _me.query('SELECT 1', function (error, rows) {
+      should.ok(!error);
+      rows.should.eql([{'1':'1'}]);
+      done();
     });
   });
   /* }}} */
@@ -81,7 +82,7 @@ describe('mysql pool', function () {
 
   it ('should_connect_pool_works_fine', function (done) {
 
-    var num = 1;
+    var num = 2;
     for (var i = 0; i < num; i++) {
       _pool.query('SELECT SLEEP(0.1) AS v,' + i + ' AS k', function (error, res) {
         if (0 === (--num)) {
