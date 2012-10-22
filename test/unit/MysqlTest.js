@@ -73,7 +73,7 @@ describe('mysql with node-mysql', function () {
 
 });
 
-describe('mysql pool', function () {
+xdescribe('mysql pool', function () {
 
   var _pool = Mysql.createPool({
     'poolsize' : 10,
