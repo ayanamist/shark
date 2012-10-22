@@ -13,7 +13,7 @@ describe('mysql with node-mysql', function () {
 
   /* {{{ should_mysql_with_4_conn_pool_works_fine() */
   it('should_mysql_with_4_conn_pool_works_fine', function (done) {
-    var _me = new Mysql.Agent(options);
+    var _me = Mysql.create(options);
     _me.on('ready', function (stat) {
       stat.should.eql(3);
       _me.query('SELECT 1', function (error, rows) {
@@ -38,7 +38,7 @@ describe('mysql with node-mysql', function () {
   /* {{{ should_mysql_query_works_fine() */
   it('should_mysql_query_works_fine', function (done) {
     options.database = 'test';
-    var _me = new Mysql.Agent(options);
+    var _me = Mysql.create(options);
     var sql = 'CREATE TABLE only_for_unittest (' + 
       'id int(10) unsigned not null auto_increment primary key,'+
       'txt varchar(2) not null default ""' +
