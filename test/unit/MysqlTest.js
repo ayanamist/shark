@@ -68,6 +68,23 @@ describe('mysql with node-mysql', function () {
 
 });
 
+describe('mysql agent', function () {
+
+  var Agent = require(__dirname + '/../../lib/my.js').Agent;
+
+  it ('should mysql agent works fine', function (done) {
+    var _me = new Agent(options);
+    _me.on('error', function (error) {
+      console.log(error);
+    });
+
+    _me.query('SELECT 1', function (error, rows) {
+      done();
+    });
+  });
+
+});
+
 describe('mysql pool', function () {
 
   var _pool = Mysql.createPool({
