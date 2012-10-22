@@ -13,10 +13,14 @@ describe('mysql with node-mysql', function () {
 
   /* {{{ should_mysql_with_4_conn_pool_works_fine() */
   it('should_mysql_with_4_conn_pool_works_fine', function (done) {
-    Mysql.create(options).query('SELECT 1', function (error, rows, info) {
-      should.ok(!error);
-      rows.should.eql([{'1':'1'}]);
-      done();
+    var _me = new Mysql.Agent(options);
+    _me.on('ready', function (stat) {
+      stat.should.eql(3);
+      _me.query('SELECT 1', function (error, rows) {
+        should.ok(!error);
+        rows.should.eql([{'1':'1'}]);
+        done();
+      });
     });
   });
   /* }}} */
@@ -33,8 +37,8 @@ describe('mysql with node-mysql', function () {
 
   /* {{{ should_mysql_query_works_fine() */
   it('should_mysql_query_works_fine', function (done) {
-    options.dbname  = 'test';
-    var _me = Mysql.create(options);
+    options.database = 'test';
+    var _me = new Mysql.Agent(options);
     var sql = 'CREATE TABLE only_for_unittest (' + 
       'id int(10) unsigned not null auto_increment primary key,'+
       'txt varchar(2) not null default ""' +
@@ -65,23 +69,6 @@ describe('mysql with node-mysql', function () {
     });
   });
   /* }}} */
-
-});
-
-describe('mysql agent', function () {
-
-  var Agent = require(__dirname + '/../../lib/my.js').Agent;
-
-  it ('should mysql agent works fine', function (done) {
-    var _me = new Agent(options);
-    _me.on('error', function (error) {
-      console.log(error);
-    });
-
-    _me.query('SELECT 1', function (error, rows) {
-      done();
-    });
-  });
 
 });
 
