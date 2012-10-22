@@ -79,8 +79,16 @@ describe('mysql pool', function () {
   });
   _pool.addserver(options);
 
-  it ('should_connect_works_fine', function (done) {
-    done();
+  it ('should_connect_pool_works_fine', function (done) {
+
+    var num = 1;
+    for (var i = 0; i < num; i++) {
+      _pool.query('SELECT SLEEP(0.1) AS v,' + i + ' AS k', function (error, res) {
+        if (0 === (--num)) {
+          done();
+        }
+      });
+    }
   });
 
 });
