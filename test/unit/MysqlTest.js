@@ -91,13 +91,13 @@ xdescribe('mysql pool', function () {
   var _pool = Mysql.createPool({
     'poolsize' : 10,
   });
-  _pool._addserver(options);
+  _pool.addserver(options);
 
   it ('should_connect_pool_works_fine', function (done) {
 
     var num = 1;
     for (var i = 0; i < num; i++) {
-      _pool._query('SELECT SLEEP(0.1) AS v,' + i + ' AS k', {'timeout' : 20}, function (error, res) {
+      _pool.query('SELECT SLEEP(0.1) AS v,' + i + ' AS k', {'timeout' : 20}, function (error, res) {
         console.log(error);
         if (0 === (--num)) {
           done();
