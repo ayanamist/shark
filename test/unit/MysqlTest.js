@@ -14,10 +14,6 @@ describe('mysql with node-mysql', function () {
   /* {{{ should_mysql_with_4_conn_pool_works_fine() */
   it('should_mysql_with_4_conn_pool_works_fine', function (done) {
     var _me = Mysql.create(options);
-    _me.on('ready', function (stat) {
-      stat.should.eql(3);
-    });
-
     _me.query('SELECT 1', function (error, rows) {
       should.ok(!error);
       rows.should.eql([{'1':'1'}]);
@@ -29,9 +25,16 @@ describe('mysql with node-mysql', function () {
   /* {{{ should_query_timeout_works_fine() */
   it('should_query_timeout_works_fine', function (done) {
     var _me = Mysql.create(options);
-    _me.query('SELECT SLEEP(0.1)', {'timeout' : 20}, function (error, res) {
+
+    _me.on('timeout', function (error, res) {
+      should.ok(!error);
+      res.should.eql([{'a' : '0'}]);
+      _me.close(done);
+    });
+
+    _me.query('SELECT SLEEP(0.05) AS a', {'timeout' : 20}, function (error, res) {
       error.should.have.property('name', 'QueryTimeout');
-      setTimeout(done, 110);
+      setTimeout(function () {}, 60);
     });
   });
   /* }}} */
