@@ -26,6 +26,16 @@ describe('mysql with node-mysql', function () {
   });
   /* }}} */
 
+  /* {{{ should_query_timeout_works_fine() */
+  it('should_query_timeout_works_fine', function (done) {
+    var _me = Mysql.create(options);
+    _me.query('SELECT SLEEP(0.1)', {'timeout' : 20}, function (error, res) {
+      error.should.have.property('name', 'QueryTimeout');
+      setTimeout(done, 110);
+    });
+  });
+  /* }}} */
+
   /* {{{ should_mysql_blackhole_works_fine() */
   it('should_mysql_blackhole_works_fine', function (done) {
     var mysql   = require(__dirname + '/../../lib/blackhole/mysql.js').create();
@@ -78,13 +88,14 @@ xdescribe('mysql pool', function () {
   var _pool = Mysql.createPool({
     'poolsize' : 10,
   });
-  _pool.addserver(options);
+  _pool._addserver(options);
 
   it ('should_connect_pool_works_fine', function (done) {
 
     var num = 1;
     for (var i = 0; i < num; i++) {
-      _pool.query('SELECT SLEEP(0.1) AS v,' + i + ' AS k', function (error, res) {
+      _pool._query('SELECT SLEEP(0.1) AS v,' + i + ' AS k', {'timeout' : 20}, function (error, res) {
+        console.log(error);
         if (0 === (--num)) {
           done();
         }
