@@ -22,23 +22,6 @@ describe('mysql with node-mysql', function () {
   });
   /* }}} */
 
-  /* {{{ should_query_timeout_works_fine() */
-  it('should_query_timeout_works_fine', function (done) {
-    var _me = Mysql.create(options);
-
-    _me.on('timeout', function (error, res) {
-      should.ok(!error);
-      res.should.eql([{'a' : '0'}]);
-      _me.close(done);
-    });
-
-    _me.query('SELECT SLEEP(0.05) AS a', {'timeout' : 20}, function (error, res) {
-      error.should.have.property('name', 'QueryTimeout');
-      setTimeout(function () {}, 60);
-    });
-  });
-  /* }}} */
-
   /* {{{ should_mysql_blackhole_works_fine() */
   it('should_mysql_blackhole_works_fine', function (done) {
     var mysql   = require(__dirname + '/../../lib/blackhole/mysql.js').create();
@@ -105,6 +88,23 @@ xdescribe('mysql pool', function () {
       });
     }
   });
+
+  /* {{{ should_query_timeout_works_fine() */
+  it('should_query_timeout_works_fine', function (done) {
+    var _me = Mysql.create(options);
+
+    _me.on('timeout', function (error, res) {
+      should.ok(!error);
+      res.should.eql([{'a' : '0'}]);
+      _me.close(done);
+    });
+
+    _me.query('SELECT SLEEP(0.05) AS a', {'timeout' : 20}, function (error, res) {
+      error.should.have.property('name', 'QueryTimeout');
+      setTimeout(function () {}, 60);
+    });
+  });
+  /* }}} */
 
 });
 
