@@ -9,7 +9,7 @@ var Mysql   = require(__dirname + '/../../lib/mysql.js');
  */
 var options = config.create(__dirname + '/etc/mysql_test.ini').all();
 
-describe('mysql pool with libmysqlclient', function() {
+describe('mysql pool with node-mysql', function() {
 
   /* {{{ should_mysql_with_4_conn_pool_works_fine() */
   it('should_mysql_with_4_conn_pool_works_fine', function(done) {
