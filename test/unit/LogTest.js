@@ -113,6 +113,8 @@ describe('file log', function() {
     var err = new Error('hello');
     Log.exception(err, {'key1' : 'value1', 'key2' : ['value2\naa']});
 
+    err.name.should.eql('Error');
+
     process.emit('exit');
     setTimeout(function() {
       var _text = fs.readFileSync(_fn, 'utf8');
