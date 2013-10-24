@@ -1,6 +1,8 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
 
-var os = require('os'), path = require('path');
+var os = require('os'),
+  fs = require('fs'),
+  path = require('path');
 
 var Builder = require(__dirname + '/../lib/build.js');
 
@@ -35,7 +37,7 @@ process.argv.slice(2).forEach(function (arg) {
 /* }}} */
 
 var _props  = path.normalize(Home + '/default-' + os.hostname() + '-' + os.arch() + '.properties');
-if (!path.existsSync(_props) || 1) {
+if (!fs.existsSync(_props) || 1) {
   Builder.init(null, Home, {
     'dir.root'      : Home,
     'log.root'      : Home + '/log/',
